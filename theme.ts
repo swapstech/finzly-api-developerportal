@@ -114,14 +114,9 @@ export const theme = {
     heading1: {
     color: '#ffffff',
     },
-    // heading2: {
-    //   fontSize: '1.57143em',
-    //   fontWeight: '600',
-    //   color: ({ colors }) => colors.text.primary,
-    //   fontFamily: ({ typography }) => typography.headings.fontFamily,
-    //   lineHeight: ({ typography }) => typography.lineHeight,
-    //   capitalize: false,
-    // },
+    heading2: {
+    color: '#ffffff',
+    },
     // heading3: {
     //   fontSize: '1.27em',
     //   fontWeight: '600',
