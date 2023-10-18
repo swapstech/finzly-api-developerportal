@@ -10,6 +10,6 @@
     "clean": "redocly-portal clean"
   },
   "dependencies": {
-    "@redocly/developer-portal": "1.1.0-beta.127"
+    "@redocly/developer-portal": "1.1.0-beta.128"
   }
 }
