@@ -2,7 +2,7 @@
   "openapi" : "3.0.0",
   "info" : {
     "title" : "Payment API",
-    "version" : "2.2.5"
+    "version" : "2.2.8"
   },
   "servers" : [ {
     "url" : "https://sandbox-security-uat.finzly.io/auth/realms/BANKOS.UAT.SANDBOX.CUSTOMER/protocol/openid-connect/token",
@@ -21,10 +21,171 @@
     "name" : "Payments",
     "description" : "Payments APIs enables third-parties, banks, and bank's downstream partners to initiate and manage payments for their customers.\n\nThe single payment API support the payment origination for the various payment rails such as ACH, FedWire, SWIFT, Instant Payments based on the speed preference.\n\nFollowing use cases helps you to understand the current payment capabilities exposed via Finzly Connect APIs.       \n\n1. Initiate Credit Payment (Payout)\n2. Initiate Debit Payment (Collection)\n3. Get Payment Details\n4. Search Payments\n5. Cancel a Payment\n6. Return a Payment\n7. Reverse a Payment\n8. Transfer (Book) Payment\n"
   }, {
+    "name" : "Bank",
+    "description" : "To fetch the bank info by routing number.\n"
+  }, {
+    "name" : "Bulk Payment",
+    "description" : "This feature allows customers to upload bulk payments and process them seamlessly. Following payment, rails are supported.\n 1. FX\n 2. ACH - NACHA format\n 3. Wire\n 4. RTP\n 5. FedNow and more\n"
+  }, {
     "name" : "Positive Pay",
     "description" : "Postive Pay Rules APIs enable third-parties, bank's customers and downstream partners to define postive rules for ACH debits or Fedwire drawdown requests or RFP (Request For Pay) request.\n\nPostive Pay Exeption APIs enable users to approve or reject the exceptions identified by the postive pay rules engine.\n"
   } ],
   "paths" : {
+    "/v1/payments/customers/{customerUID}/files/{fileType}" : {
+      "post" : {
+        "tags" : [ "Bulk Payment" ],
+        "summary" : "To fetch the bank information.",
+        "description" : "To fetch the bank details based on bank routing number.",
+        "operationId" : "bulkUpload",
+        "parameters" : [ {
+          "name" : "customerUID",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "Customer unique Id."
+          }
+        }, {
+          "name" : "fileType",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "file type.",
+            "example" : "csv,txt,etc"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "bulk payment file",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkPaymentResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successfully processed request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkPaymentResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter environment"
+          },
+          "401" : {
+            "description" : "You are not authorized to access the resource"
+          },
+          "403" : {
+            "description" : "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404" : {
+            "description" : "The resource you were trying to reach is not found"
+          },
+          "405" : {
+            "description" : "bad input parameter environment"
+          },
+          "500" : {
+            "description" : "Internal server error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Service unavailable"
+          }
+        }
+      }
+    },
+    "/v1/banks/{routingNumber}" : {
+      "post" : {
+        "tags" : [ "Bank" ],
+        "summary" : "To fetch the bank information.",
+        "description" : "To fetch the bank details based on bank routing number.",
+        "operationId" : "fetchBankInfo",
+        "parameters" : [ {
+          "name" : "routingNumber",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "Bank routing number."
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "search results matching criteria",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BankApiResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successfully processed request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BankApiResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter environment"
+          },
+          "401" : {
+            "description" : "You are not authorized to access the resource"
+          },
+          "403" : {
+            "description" : "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404" : {
+            "description" : "The resource you were trying to reach is not found"
+          },
+          "405" : {
+            "description" : "bad input parameter environment"
+          },
+          "500" : {
+            "description" : "Internal server error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Service unavailable"
+          }
+        }
+      }
+    },
     "/v2/positivepay/rules/search" : {
       "post" : {
         "tags" : [ "Positive Pay" ],
@@ -731,7 +892,7 @@
       "put" : {
         "tags" : [ "Positive Pay" ],
         "summary" : "Approve All PositivePay Exceptions",
-        "description" : "Approve all positivepay exceptions",
+        "description" : "Approve all positivepay exceptions.",
         "operationId" : "approveAllExceptions",
         "requestBody" : {
           "content" : {
@@ -1639,6 +1800,35 @@
         },
         "description" : "The bank or intermediary bank details is needed to process the payment and it is required when the sender/receiver/debtor/creditor are not configured in the Finzly-CRM system. Based on the bankIDType either bankId or swiftCode is required. For the speed associated with the fedwire payment rail, this will be mapped to {4100} for the receiver bank and to {4000} for the receiver intermediary bank."
       },
+      "rfpInfo" : {
+        "properties" : {
+          "requestedExecutionDate" : {
+            "type" : "string",
+            "description" : "This is mandatory field for RFP FEDNOW payment. The valid date format is in [MM-dd-yyyy]. 1.If set to 'False', then the debtor should instruct payment on the date indicated in the request for payment 2.If set to 'True', then the debtor may instruct payment prior to the date indicated in the request for payment.",
+            "example" : "07-21-2022."
+          },
+          "expiryDate" : {
+            "type" : "string",
+            "description" : "This is mandatory field for RFP FEDNOW payment. The valid date format is in [MM-dd-yyyy]. Beyond this date debitor can no longer accept/pay or decline/reject the request for payment.",
+            "example" : "07-21-2022."
+          },
+          "amountModificationAllowed" : {
+            "type" : "boolean",
+            "description" : "This is optinal field for RFP FEDNOW payment. 1.If it is 'True', then the debtor may instruct payment for an amount different than the amount indicated in the request for payment (Instructed Amount). 2.If it is 'False', then the debtor should instruct payment for the exact amount as indicated in the request for payment (Instructed Amount).",
+            "example" : false
+          },
+          "earlyPayment" : {
+            "type" : "boolean",
+            "description" : "This is optinal field for RFP FEDNOW payment. 1.If it is 'True', then the debtor may instruct payment prior to the date indicated in the request for payment (Requested Execution Date). 2.If it is 'False', then the debtor should instruct payment on the date indicated in the request for payment (Requested Execution Date).",
+            "example" : false
+          },
+          "guaranteedPayment" : {
+            "type" : "boolean",
+            "description" : "This is optinal field for RFP FEDNOW payment. 1.If it is 'True', then the creditor requests payment guarantees from the debtor when.scheduling the payment 2.If it is 'False', then the creditor does not request payment guarantee from the debtor.when scheduling the payment.",
+            "example" : false
+          }
+        }
+      },
       "Fee" : {
         "properties" : {
           "feeName" : {
@@ -1656,6 +1846,179 @@
             "maxLength" : 9,
             "type" : "number",
             "description" : "Fee to be charged for the payment transaction."
+          }
+        }
+      },
+      "routingNumber" : {
+        "properties" : {
+          "institutionName" : {
+            "type" : "string",
+            "description" : "Bank Name. This is an optional field.",
+            "example" : "ABC Bank etc."
+          },
+          "nationalIdName" : {
+            "type" : "string",
+            "description" : "nationalId name. This is an optional field..",
+            "example" : "ABA etc."
+          },
+          "nationalId" : {
+            "type" : "string",
+            "description" : "bank routing number. This is not an optional field.",
+            "example" : "123656698 etc."
+          },
+          "recordTypeCode" : {
+            "type" : "string",
+            "description" : "record type code. This is an optional field.",
+            "example" : "SEND etc."
+          },
+          "routingAddress" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/routingAddress"
+            }
+          },
+          "deliveryMethods" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/deliveryMethods"
+            }
+          }
+        }
+      },
+      "routingAddress" : {
+        "properties" : {
+          "addressLine1" : {
+            "maxLength" : 35,
+            "type" : "string",
+            "description" : "Bank address line 1",
+            "example" : "111 My Street"
+          },
+          "addressLine2" : {
+            "maxLength" : 35,
+            "type" : "string",
+            "description" : "Bank address line 2. This is an optional field.",
+            "example" : "Suite 210"
+          },
+          "city" : {
+            "maxLength" : 35,
+            "type" : "string",
+            "description" : "Bank City. This is an optional field.",
+            "example" : "Charlotte"
+          },
+          "stateCode" : {
+            "maxLength" : 35,
+            "type" : "string",
+            "description" : "Bank State. This is an optional field.",
+            "example" : "North Carolina"
+          },
+          "zipCode" : {
+            "maxLength" : 35,
+            "type" : "string",
+            "description" : "Country specific postal/zip code. This is an optional field.",
+            "example" : "28269 etc."
+          },
+          "countryCode" : {
+            "maxLength" : 2,
+            "minLength" : 2,
+            "type" : "string",
+            "description" : "Country codes per ISO 3166.",
+            "example" : "US, CN, AR etc."
+          },
+          "country" : {
+            "maxLength" : 20,
+            "type" : "string",
+            "description" : "Country name. This is an optional field.",
+            "example" : "USA etc."
+          }
+        }
+      },
+      "deliveryMethods" : {
+        "properties" : {
+          "institutionName" : {
+            "type" : "array",
+            "description" : "List of delivery methods. This is an optional field.",
+            "example" : "ACH,FEDNOW etc."
+          }
+        }
+      },
+      "fedwireRoutingInfo" : {
+        "properties" : {
+          "fundsTransferStatus" : {
+            "type" : "boolean",
+            "description" : "boolean value. This is an optional field.",
+            "example" : false
+          },
+          "fundsSettlementOnly" : {
+            "type" : "boolean",
+            "description" : "boolean value. This is an optional field.",
+            "example" : false
+          },
+          "securityTransferStatus" : {
+            "type" : "boolean",
+            "description" : "boolean value. This is an optional field.",
+            "example" : false
+          }
+        }
+      },
+      "rtpRoutingInfo" : {
+        "properties" : {
+          "participantId" : {
+            "type" : "string",
+            "description" : "participant Id. This is an optional field."
+          },
+          "services" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/services"
+            }
+          },
+          "receivingConnection" : {
+            "type" : "string",
+            "description" : "receiving connection. This is an optional field."
+          },
+          "signOnStatus" : {
+            "type" : "string",
+            "description" : "signOn status. This is an optional field."
+          },
+          "participantActivationDate" : {
+            "type" : "string",
+            "description" : "participant activation date. This is an optional field."
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "status. This is an optional field."
+          },
+          "connectionStatus" : {
+            "type" : "string",
+            "description" : "connection status. This is an optional field."
+          }
+        }
+      },
+      "fedNowRoutingInfo" : {
+        "properties" : {
+          "services" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/services"
+            }
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "status. This is an optional field."
+          },
+          "connectionStatus" : {
+            "type" : "string",
+            "description" : "connection status. This is an optional field."
+          }
+        }
+      },
+      "services" : {
+        "properties" : {
+          "institutionName" : {
+            "maxLength" : 20,
+            "type" : "array",
+            "description" : "List of ervices. This is an optional field.",
+            "example" : "Custom etc."
           }
         }
       },
@@ -3140,6 +3503,9 @@
             "description" : "Speed associated with the payment based on the delivery time and fee. The Speed names and associated payment rail can be configured or defined by the bank/financial institutions. The supported payment rails in FinzlyOS are ACH, Fedwire, RTP or FedNow. The following are the standard speed names and payment rails configured by default Economy - [ACH-REGULAR], Economy Plus [ACH-SAMEDAY], Express [FEDWIRE], Instant [FEDNOW or RTP].",
             "example" : "Economy, Economy Plus, Express, Instant"
           },
+          "rfpInfo" : {
+            "$ref" : "#/components/schemas/rfpInfo"
+          },
           "paymentNotes" : {
             "maxLength" : 200,
             "minLength" : 1,
@@ -3275,6 +3641,27 @@
           },
           "data" : {
             "$ref" : "#/components/schemas/GetPaymentData"
+          }
+        }
+      },
+      "BulkPaymentResponse" : {
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "description" : "Error/success message indicating the issue in API call along with the reason or you will get success message with HTTP status code.",
+            "example" : "<message>"
+          }
+        }
+      },
+      "BankApiResponse" : {
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "description" : "Error message corresponding to the error code indicating the issue in API call along with the reason.,",
+            "example" : "<Reason>"
+          },
+          "routingNumber" : {
+            "$ref" : "#/components/schemas/GetBankInfoData"
           }
         }
       },
@@ -3913,6 +4300,33 @@
           }
         },
         "description" : "Search payments based on various parameters. This provides limited payment data in comparison with GetPayment response."
+      },
+      "GetBankInfoData" : {
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "description" : "Error message.",
+            "example" : "Failed to fetch bank details"
+          },
+          "routingNumber" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/routingNumber"
+            }
+          },
+          "deliveryMethods" : {
+            "$ref" : "#/components/schemas/routingNumber"
+          },
+          "fedwireRoutingInfo" : {
+            "$ref" : "#/components/schemas/fedwireRoutingInfo"
+          },
+          "rtpRoutingInfo" : {
+            "$ref" : "#/components/schemas/rtpRoutingInfo"
+          },
+          "fedNowRoutingInfo" : {
+            "$ref" : "#/components/schemas/fedNowRoutingInfo"
+          }
+        }
       },
       "GetPaymentData" : {
         "properties" : {
