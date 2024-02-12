@@ -1,0 +1,132 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Customer User Management",
+    "description" : "The API for the customer user management.",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.swaggerhub.com/Finzly/CustomerUserManagement/1.0.0",
+    "description" : "SwaggerHub API Auto Mocking"
+  }, {
+    "url" : "https://sandbox-security-uat.finzly.io/auth/realms/BANKOS.UAT.SANDBOX.CUSTOMER/protocol/openid-connect/token",
+    "description" : "Authentication",
+    "variables" : {
+      "tenant" : {
+        "description" : "Tenant",
+        "default" : "sandbox"
+      }
+    }
+  } ],
+  "paths" : {
+    "/v1/customer/{customerUID}/users" : {
+      "post" : {
+        "tags" : [ "Users" ],
+        "summary" : "Create new user.",
+        "description" : "To save customer user details in the system.",
+        "operationId" : "saveUserDetails",
+        "parameters" : [ {
+          "name" : "customerUID",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "customer Unique Identifier."
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "Save user details",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/saveUserResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/saveUserResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "You are not authorized to access the resource"
+          },
+          "403" : {
+            "description" : "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404" : {
+            "description" : "The resource you were trying to reach is not found"
+          },
+          "500" : {
+            "description" : "Internal server error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Service unavailable"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Error" : {
+        "properties" : {
+          "code" : {
+            "type" : "string",
+            "description" : "Error code assigned by the system",
+            "example" : "invalidMethod"
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "Error description to provide addtional details about the error code",
+            "example" : "Invalid HTTP method used"
+          }
+        }
+      },
+      "saveUserResponse" : {
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "description" : "Error message indicating the issue in API call along with the reason.",
+            "example" : "<Reason>"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/saveUserResponse_data"
+          }
+        }
+      },
+      "saveUserResponse_data" : {
+        "type" : "object",
+        "properties" : {
+          "userUUID" : {
+            "type" : "string",
+            "description" : "The unique userUUID reference user saved successfully.",
+            "example" : "f37f6757-c546-42d4-8235-5965419b495d."
+          }
+        }
+      }
+    }
+  }
+}
