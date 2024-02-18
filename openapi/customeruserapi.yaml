@@ -21,7 +21,7 @@
         "tags" : [ "Users" ],
         "summary" : "Create new customer user.",
         "description" : "To save customer user details in the system.",
-        "operationId" : "saveUserDetails",
+        "operationId" : "save",
         "parameters" : [ {
           "name" : "customerUID",
           "in" : "path",
@@ -38,7 +38,7 @@
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/userRequest"
+                "$ref" : "#/components/schemas/CustomerUserRequest"
               }
             }
           },
@@ -50,7 +50,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/userResponse"
+                  "$ref" : "#/components/schemas/CustomerUserResponse"
                 }
               }
             }
@@ -60,7 +60,7 @@
             "content" : {
               "*/*" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/userResponse"
+                  "$ref" : "#/components/schemas/CustomerUserResponse"
                 }
               }
             }
@@ -113,7 +113,7 @@
           }
         }
       },
-      "userRequest" : {
+      "CustomerUserRequest" : {
         "required" : [ "department", "email", "externalReferenceId", "firstName", "lastName", "loginId", "mobile", "roleUIDs" ],
         "properties" : {
           "externalReferenceId" : {
@@ -146,51 +146,33 @@
             "description" : "User contact number",
             "example" : "9389989658"
           },
-          "department" : {
-            "type" : "string",
-            "description" : "valid department code",
-            "example" : "Admin etc"
-          },
-          "otherDepartment" : {
-            "type" : "array",
-            "description" : "valid list of department codes",
-            "example" : "Admin etc."
-          },
-          "ssoEnabled" : {
-            "type" : "string",
-            "example" : "true,false"
-          },
-          "emulationUser" : {
-            "type" : "string",
-            "example" : "true,false"
-          },
           "roleUIDs" : {
             "type" : "array",
-            "description" : "valid list of department codes",
-            "example" : "adminRole etc."
+            "description" : "valid list of role ids.",
+            "example" : "f37f6757-d345-ffff4-8235-5965419b495d etc."
           },
           "limits" : {
-            "$ref" : "#/components/schemas/userlimits"
+            "$ref" : "#/components/schemas/Customerlimits"
           }
         }
       },
-      "userlimits" : {
+      "Customerlimits" : {
         "properties" : {
-          "limitUID" : {
+          "id" : {
             "type" : "string",
             "example" : "FX_LIMIT, etc"
           },
-          "appCode" : {
+          "code" : {
             "type" : "string",
             "example" : "finzly.cashos.cashosfx, etc"
           },
-          "limitValue" : {
+          "value" : {
             "type" : "string",
             "example" : "FX_DAILY_LIMIT, etc"
           }
         }
       },
-      "userResponse" : {
+      "CustomerUserResponse" : {
         "properties" : {
           "message" : {
             "type" : "string",
@@ -198,11 +180,11 @@
             "example" : "<Reason>"
           },
           "data" : {
-            "$ref" : "#/components/schemas/userResponse_data"
+            "$ref" : "#/components/schemas/CustomerUserResponse_data"
           }
         }
       },
-      "userResponse_data" : {
+      "CustomerUserResponse_data" : {
         "type" : "object",
         "properties" : {
           "userUUID" : {
