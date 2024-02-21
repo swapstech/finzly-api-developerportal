@@ -151,24 +151,30 @@
             "description" : "valid list of role ids.",
             "example" : "f37f6757-d345-ffff4-8235-5965419b495d etc."
           },
-          "limits" : {
-            "$ref" : "#/components/schemas/Customerlimits"
+          "applications" : {
+            "$ref" : "#/components/schemas/Applications"
           }
         }
       },
-      "Customerlimits" : {
+      "Applications" : {
         "properties" : {
-          "id" : {
-            "type" : "string",
-            "example" : "FX_LIMIT, etc"
-          },
-          "code" : {
+          "appcode" : {
             "type" : "string",
             "example" : "finzly.cashos.cashosfx, etc"
           },
-          "value" : {
+          "limits" : {
+            "$ref" : "#/components/schemas/UserLimit"
+          }
+        }
+      },
+      "UserLimit" : {
+        "properties" : {
+          "key" : {
             "type" : "string",
             "example" : "FX_DAILY_LIMIT, etc"
+          },
+          "value" : {
+            "type" : "integer"
           }
         }
       },
