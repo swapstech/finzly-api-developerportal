@@ -2,7 +2,7 @@
   "openapi" : "3.0.0",
   "info" : {
     "title" : "Customer and Account API",
-    "version" : "2.2.3"
+    "version" : "2.2.4"
   },
   "servers" : [ {
     "url" : "https://sandbox-digitalbanking-uat.finzly.io/auth/realms/{{TENANT}}/protocol/openid-connect/token",
@@ -24,11 +24,14 @@
     "name" : "Customer Account",
     "description" : "Customer Accounts APIs helps you to manage the accounts associated with the customer.\n\nFollowing use cases helps you to understand the current customer accounts capabilities exposed via APIs\n\n1. Create Customer Account\n2. Update Customer Account\n3. Search Customer Accounts\n4. Get Customer Account Details\n"
   }, {
-    "name" : "Customer Deposit Account",
-    "description" : "Customer Deposit Accounts APIs helps you to manage the accounts associated with the customer.\n\nFollowing use cases helps you to understand the current customer accounts capabilities exposed via APIs\n\n1. Create Customer Deposit Account\n"
-  }, {
     "name" : "Customer Contact",
     "description" : "Customer Contact APIs helps you to manage the customer  beneficiaries (contacts) in the finzly CRM system. \n\nOnce the contacts are defined the contact UID can be used in the payment API as a receiver [accountUID] to initiate a payment request. \n\nFollowing use cases helps you to understand the current customer contacts capabilities exposed via APIs\n\n1. Create Customer Contact\n2. Update Customer Contact\n3. Search Customer Contacts\n4. Get Customer Contact Details\n"
+  }, {
+    "name" : "Customer User",
+    "description" : "Customer user APIs helps you to manage the users associated with the customer.\n\nFollowing use cases helps you to understand the current customer users capabilities exposed via APIs\n\n1. Create Customer User\n2. Update Customer User\n"
+  }, {
+    "name" : "Customer Role",
+    "description" : "Customer role APIs helps you to manage the roles associated with the users.\n\nFollowing use cases helps you to understand the current customer roles capabilities exposed via APIs\n\n1. Create Customer Role\n2. Update Customer Role      \n"
   } ],
   "paths" : {
     "/v2/customers" : {
@@ -924,75 +927,6 @@
         }
       }
     },
-    "/v1/bank/account" : {
-      "post" : {
-        "tags" : [ "Customer Deposit Account" ],
-        "summary" : "Create customer deposit account",
-        "description" : "Create a customer deposit account",
-        "operationId" : "createCustomerDepositAccount",
-        "requestBody" : {
-          "description" : "Account Info",
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DepositAccountRequest"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "default" : {
-            "description" : "Successful",
-            "content" : {
-              "*/*" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DepositAccountRequest"
-                }
-              }
-            }
-          },
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "*/*" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DepositAccountResponse"
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "Bad request"
-          },
-          "401" : {
-            "description" : "You are not authorized to access the resource"
-          },
-          "403" : {
-            "description" : "Accessing the resource you were trying to reach is forbidden"
-          },
-          "404" : {
-            "description" : "The resource you were trying to reach is not found"
-          },
-          "500" : {
-            "description" : "Internal server error",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/Error"
-                  }
-                }
-              }
-            }
-          },
-          "503" : {
-            "description" : "Service unavailable"
-          }
-        }
-      }
-    },
     "/v2/customers/{customerUID}/contacts" : {
       "get" : {
         "tags" : [ "Customer Contact" ],
@@ -1313,6 +1247,335 @@
               "*/*" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/CreateCustomerContactResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "You are not authorized to access the resource"
+          },
+          "403" : {
+            "description" : "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404" : {
+            "description" : "The resource you were trying to reach is not found"
+          },
+          "500" : {
+            "description" : "Internal server error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Service unavailable"
+          }
+        }
+      }
+    },
+    "/v1/customer/{customerUID}/users" : {
+      "post" : {
+        "tags" : [ "Customer User" ],
+        "summary" : "Create new customer user.",
+        "description" : "To save customer user details in the system.",
+        "operationId" : "save",
+        "parameters" : [ {
+          "name" : "customerUID",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "Customer Unique Identifier."
+          }
+        } ],
+        "requestBody" : {
+          "description" : "Credit Payment Request fields",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CustomerUserCreateRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "default" : {
+            "description" : "Save user details",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CustomerUserResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CustomerUserResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "You are not authorized to access the resource"
+          },
+          "403" : {
+            "description" : "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404" : {
+            "description" : "The resource you were trying to reach is not found"
+          },
+          "500" : {
+            "description" : "Internal server error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Service unavailable"
+          }
+        }
+      }
+    },
+    "/v1/customer/{customerUID}/users/{userUID}" : {
+      "put" : {
+        "tags" : [ "Customer User" ],
+        "summary" : "Update existing customer user.",
+        "description" : "To update existing customer user details in the system.",
+        "operationId" : "update",
+        "parameters" : [ {
+          "name" : "customerUID",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "Customer Unique Identifier."
+          }
+        }, {
+          "name" : "userUID",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "customer Unique Identifier."
+          }
+        } ],
+        "requestBody" : {
+          "description" : "Credit Payment Request fields",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CustomerUserUpdateRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "default" : {
+            "description" : "Save user details",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CustomerUserUpdateRequest"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CustomerUserResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "You are not authorized to access the resource"
+          },
+          "403" : {
+            "description" : "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404" : {
+            "description" : "The resource you were trying to reach is not found"
+          },
+          "500" : {
+            "description" : "Internal server error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Service unavailable"
+          }
+        }
+      }
+    },
+    "/v1/customers/{customerId}/roles" : {
+      "post" : {
+        "tags" : [ "Customer Role" ],
+        "summary" : "Create new customer role.",
+        "description" : "To save customer role details in the system.",
+        "operationId" : "save-role",
+        "parameters" : [ {
+          "name" : "customerId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "customer Unique Identifier."
+          }
+        } ],
+        "requestBody" : {
+          "description" : "Credit Payment Request fields",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CustomerRoleCreateRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "default" : {
+            "description" : "Save user details",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CustomerRoleResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CustomerRoleResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "You are not authorized to access the resource"
+          },
+          "403" : {
+            "description" : "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404" : {
+            "description" : "The resource you were trying to reach is not found"
+          },
+          "500" : {
+            "description" : "Internal server error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Service unavailable"
+          }
+        }
+      }
+    },
+    "/v1/customers/{customerId}/roles/{roleId}" : {
+      "get" : {
+        "tags" : [ "Customer Role" ],
+        "summary" : "Get customer role.",
+        "description" : "Get customer role details in the system.",
+        "operationId" : "get-role",
+        "parameters" : [ {
+          "name" : "customerId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "Customer Unique Identifier."
+          }
+        }, {
+          "name" : "roleId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "Role Unique Identifier."
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "Save user details",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GetCustomerRoleResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CustomerRoleResponse"
                 }
               }
             }
@@ -2223,121 +2486,6 @@
           }
         }
       },
-      "DepositAccountRequest" : {
-        "properties" : {
-          "productCode" : {
-            "type" : "string"
-          },
-          "accountName" : {
-            "type" : "string"
-          },
-          "accountNumber" : {
-            "type" : "string"
-          },
-          "stopDebits" : {
-            "type" : "boolean"
-          },
-          "stopWires" : {
-            "type" : "boolean"
-          },
-          "collateralized" : {
-            "type" : "boolean"
-          },
-          "legalHold" : {
-            "type" : "boolean"
-          },
-          "statementFrequency" : {
-            "type" : "string"
-          },
-          "nextStatementDate" : {
-            "type" : "string"
-          },
-          "deceasedOwner" : {
-            "type" : "boolean"
-          },
-          "notification" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/Notification"
-            }
-          },
-          "debitCards" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/DebitCards"
-            }
-          },
-          "party" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/Party"
-            }
-          }
-        }
-      },
-      "Notification" : {
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "legalEntityId" : {
-            "type" : "string"
-          },
-          "emailList" : {
-            "type" : "string"
-          },
-          "phoneNumberList" : {
-            "type" : "string"
-          },
-          "depositAccountId" : {
-            "type" : "integer"
-          }
-        }
-      },
-      "DebitCards" : {
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "cardNumber" : {
-            "type" : "string"
-          },
-          "cardExpiryDate" : {
-            "type" : "string"
-          },
-          "nameOnCard" : {
-            "type" : "string"
-          },
-          "status" : {
-            "type" : "string"
-          },
-          "depositAccountId" : {
-            "type" : "integer"
-          },
-          "result" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Party" : {
-        "properties" : {
-          "id" : {
-            "type" : "string"
-          },
-          "counterPartyShortName" : {
-            "type" : "string"
-          },
-          "relationship" : {
-            "type" : "string"
-          },
-          "addedOn" : {
-            "type" : "string"
-          },
-          "depositAccountId" : {
-            "type" : "integer"
-          }
-        }
-      },
       "CreateAccountRequest" : {
         "properties" : {
           "externalReferenceId" : {
@@ -2408,28 +2556,6 @@
           },
           "masterGl" : {
             "type" : "string"
-          }
-        }
-      },
-      "DepositAccountResponse" : {
-        "properties" : {
-          "status" : {
-            "type" : "string",
-            "description" : "Status of the API request either it will be a success or a failure",
-            "example" : "Success or Failure",
-            "enum" : [ "Success", "Failure" ]
-          },
-          "code" : {
-            "type" : "string",
-            "description" : "Code associated with the error.",
-            "example" : "ACC001 etc."
-          },
-          "message" : {
-            "type" : "string",
-            "example" : "<Reason>"
-          },
-          "depositAccount" : {
-            "$ref" : "#/components/schemas/DepositAccountResponse_depositAccount"
           }
         }
       },
@@ -2743,6 +2869,198 @@
           }
         }
       },
+      "CustomerUserCreateRequest" : {
+        "required" : [ "email", "externalReferenceId", "firstName", "lastName", "loginId", "mobile", "roleUIDs" ],
+        "properties" : {
+          "externalReferenceId" : {
+            "type" : "string",
+            "description" : "Unique reference id from a system outside of finzly. The external reference id can be used by the finzly for the request tracing (if needed).",
+            "example" : "User101"
+          },
+          "loginId" : {
+            "type" : "string",
+            "description" : "Unique identifier.",
+            "example" : "user123"
+          },
+          "firstName" : {
+            "type" : "string",
+            "description" : "User first name.",
+            "example" : "john"
+          },
+          "lastName" : {
+            "type" : "string",
+            "description" : "last name of user",
+            "example" : "T."
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "users email id",
+            "example" : "user123@gamil.com"
+          },
+          "mobile" : {
+            "type" : "string",
+            "description" : "User contact number",
+            "example" : "9389989658"
+          },
+          "roleUIDs" : {
+            "type" : "array",
+            "description" : "valid list of role ids.",
+            "example" : "f37f6757-d345-ffff4-8235-5965419b495d etc."
+          },
+          "applications" : {
+            "$ref" : "#/components/schemas/Applications"
+          }
+        }
+      },
+      "CustomerUserUpdateRequest" : {
+        "properties" : {
+          "externalReferenceId" : {
+            "type" : "string",
+            "description" : "Unique reference id from a system outside of finzly. The external reference id can be used by the finzly for the request tracing (if needed).",
+            "example" : "User101"
+          },
+          "loginId" : {
+            "type" : "string",
+            "description" : "unique identifier.",
+            "example" : "user123"
+          },
+          "firstName" : {
+            "type" : "string",
+            "description" : "User first name.",
+            "example" : "john"
+          },
+          "lastName" : {
+            "type" : "string",
+            "description" : "last name of user",
+            "example" : "T."
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "users email id",
+            "example" : "user123@gamil.com"
+          },
+          "mobile" : {
+            "type" : "string",
+            "description" : "User contact number",
+            "example" : "9389989658"
+          },
+          "roleUIDs" : {
+            "type" : "array",
+            "description" : "valid list of role ids.",
+            "example" : "f37f6757-d345-ffff4-8235-5965419b495d etc."
+          },
+          "applications" : {
+            "$ref" : "#/components/schemas/Applications"
+          }
+        }
+      },
+      "Applications" : {
+        "required" : [ "appcode" ],
+        "properties" : {
+          "appcode" : {
+            "type" : "string",
+            "description" : "application code",
+            "example" : "finzly.cashos.cashosfx, etc"
+          },
+          "limits" : {
+            "$ref" : "#/components/schemas/UserLimit"
+          }
+        }
+      },
+      "UserLimit" : {
+        "required" : [ "key", "value" ],
+        "properties" : {
+          "key" : {
+            "type" : "string",
+            "description" : "limit code",
+            "example" : "FX_DAILY_LIMIT, etc"
+          },
+          "value" : {
+            "type" : "integer",
+            "description" : "value for the limit"
+          }
+        }
+      },
+      "CustomerUserResponse" : {
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "description" : "Error message indicating the issue in API call along with the reason.",
+            "example" : "<Reason>"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/CustomerUserResponse_data"
+          }
+        }
+      },
+      "CustomerRoleCreateRequest" : {
+        "required" : [ "applications", "description", "externalReferenceId", "name" ],
+        "properties" : {
+          "externalReferenceId" : {
+            "type" : "string",
+            "description" : "Unique reference id from a system outside of finzly. The external reference id can be used by the finzly for the request tracing (if needed).",
+            "example" : "Role101"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "unique identifier.",
+            "example" : "test123"
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "New role for new customers",
+            "example" : "New role for new customers"
+          },
+          "applications" : {
+            "$ref" : "#/components/schemas/RoleApplication"
+          }
+        }
+      },
+      "RoleApplication" : {
+        "properties" : {
+          "appcode" : {
+            "type" : "string",
+            "example" : "finzly.cashos.cashosfx, etc"
+          },
+          "entitlements" : {
+            "type" : "array",
+            "example" : [ "vTrd", "mFXQ" ]
+          },
+          "limit" : {
+            "$ref" : "#/components/schemas/RoleLimit"
+          }
+        }
+      },
+      "RoleLimit" : {
+        "properties" : {
+          "key" : {
+            "type" : "string",
+            "example" : "FX_DAILY_LIMIT, etc"
+          },
+          "value" : {
+            "type" : "integer"
+          }
+        }
+      },
+      "CustomerRoleResponse" : {
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "description" : "Error message indicating the issue in API call along with the reason.",
+            "example" : "<Reason>"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/CustomerUserResponse_data"
+          }
+        }
+      },
+      "GetCustomerRoleResponse" : {
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/GetCustomerRoleResponse_data"
+          }
+        }
+      },
       "PaymentNoteOptionValueChildren_data" : {
         "type" : "object",
         "properties" : {
@@ -2792,26 +3110,6 @@
             "description" : "Account unique identifier assigned by the system"
           },
           "externalReferenceId" : {
-            "type" : "string"
-          }
-        }
-      },
-      "DepositAccountResponse_depositAccount" : {
-        "type" : "object",
-        "properties" : {
-          "accountUID" : {
-            "type" : "integer"
-          },
-          "productCode" : {
-            "type" : "string"
-          },
-          "accountName" : {
-            "type" : "string"
-          },
-          "accountNumber" : {
-            "type" : "string"
-          },
-          "routingNumber" : {
             "type" : "string"
           }
         }
@@ -2910,6 +3208,39 @@
           "externalReferenceId" : {
             "type" : "string",
             "description" : "External reference id received in the request."
+          }
+        }
+      },
+      "CustomerUserResponse_data" : {
+        "type" : "object",
+        "properties" : {
+          "userUUID" : {
+            "type" : "string",
+            "description" : "Newly created user id.",
+            "example" : "f37f6757-c546-42d4-8235-5965419b495d."
+          }
+        }
+      },
+      "GetCustomerRoleResponse_data" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "Newly created role id.",
+            "example" : "f37f6757-c546-42d4-8235-5965419b495d."
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Newly created role id.",
+            "example" : "adminRole."
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "Newly created role id.",
+            "example" : "Newly created role id."
+          },
+          "applications" : {
+            "$ref" : "#/components/schemas/RoleApplication"
           }
         }
       }
