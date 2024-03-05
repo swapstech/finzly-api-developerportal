@@ -124,7 +124,7 @@
           }
         } ],
         "requestBody" : {
-          "description" : "Credit Payment Request fields",
+          "description" : "User Request fields",
           "content" : {
             "application/json" : {
               "schema" : {
@@ -185,6 +185,165 @@
           }
         }
       }
+    },
+    "/v1/customers/{customerId}/roles" : {
+      "post" : {
+        "tags" : [ "Roles" ],
+        "summary" : "Create new customer role.",
+        "description" : "To save customer role details in the system.",
+        "operationId" : "saveRole",
+        "parameters" : [ {
+          "name" : "customerId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "customer Unique Identifier."
+          }
+        } ],
+        "requestBody" : {
+          "description" : "Role Request fields",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CustomerRoleRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "default" : {
+            "description" : "Save role details",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CustomerRoleResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CustomerRoleResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "You are not authorized to access the resource"
+          },
+          "403" : {
+            "description" : "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404" : {
+            "description" : "The resource you were trying to reach is not found"
+          },
+          "500" : {
+            "description" : "Internal server error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Service unavailable"
+          }
+        }
+      }
+    },
+    "/v1/customers/{customerId}/roles/{roleId}" : {
+      "get" : {
+        "tags" : [ "Roles" ],
+        "summary" : "Get role details.",
+        "description" : "Get role details.",
+        "operationId" : "getRole",
+        "parameters" : [ {
+          "name" : "customerId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "customer Unique Identifier."
+          }
+        }, {
+          "name" : "roleId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "role Unique Identifier."
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "Get role",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RoleResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RoleResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "401" : {
+            "description" : "You are not authorized to access the resource"
+          },
+          "403" : {
+            "description" : "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404" : {
+            "description" : "The resource you were trying to reach is not found"
+          },
+          "500" : {
+            "description" : "Internal server error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Service unavailable"
+          }
+        }
+      }
     }
   },
   "components" : {
@@ -200,6 +359,32 @@
             "type" : "string",
             "description" : "Error description to provide addtional details about the error code",
             "example" : "Invalid HTTP method used"
+          }
+        }
+      },
+      "CustomerRoleRequest" : {
+        "required" : [ "description", "externalReferenceId", "name" ],
+        "properties" : {
+          "externalReferenceId" : {
+            "type" : "string",
+            "description" : "Unique reference id from a system outside of finzly. The external reference id can be used by the finzly for the request tracing (if needed).",
+            "example" : "Role101"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Role name.",
+            "example" : "Admin"
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "Description for the role.",
+            "example" : "Role for admin users"
+          },
+          "applications" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/RoleApplication"
+            }
           }
         }
       },
@@ -276,25 +461,78 @@
           }
         }
       },
-      "CustomerUserResponse" : {
+      "RoleApplication" : {
         "properties" : {
+          "name" : {
+            "type" : "string",
+            "description" : "application name",
+            "example" : "Foreign Exchange, etc"
+          },
+          "entitlements" : {
+            "type" : "array",
+            "example" : "View Portal,Manage Account, etc"
+          },
+          "limits" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/limits"
+            }
+          }
+        }
+      },
+      "RoleResponse" : {
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "role UUID",
+            "example" : "123fdhsfh47834jsdh84754"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "role name",
+            "example" : "Admin"
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "Role for admin",
+            "example" : "Admin roles"
+          },
+          "applications" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Applications"
+            }
+          }
+        }
+      },
+      "CustomerRoleResponse" : {
+        "properties" : {
+          "roleId" : {
+            "type" : "string",
+            "description" : "Newly role UUID",
+            "example" : "123fdhsfh47834jsdh84754"
+          },
           "message" : {
             "type" : "string",
             "description" : "Error message indicating the issue in API call along with the reason.",
             "example" : "<Reason>"
           },
           "data" : {
-            "$ref" : "#/components/schemas/CustomerUserResponse_data"
+            "type" : "object"
           }
         }
       },
-      "CustomerUserResponse_data" : {
-        "type" : "object",
+      "CustomerUserResponse" : {
         "properties" : {
           "userUUID" : {
             "type" : "string",
             "description" : "Newly created user id.",
             "example" : "f37f6757-c546-42d4-8235-5965419b495d."
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "Error message indicating the issue in API call along with the reason.",
+            "example" : "<Reason>"
           }
         }
       }
