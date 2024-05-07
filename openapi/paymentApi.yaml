@@ -475,7 +475,7 @@
           "externalReferenceId" : {
             "type" : "string",
             "description" : "Unique reference id from a system outside of finzly. The external reference id can be used by the finzly for the request tracing (if needed).",
-            "example" : "REQ123 or 1274878"
+            "example" : "REQ123"
           },
           "channel" : {
             "type" : "string",
@@ -588,7 +588,7 @@
           "message" : {
             "type" : "string",
             "description" : "This will be the detailed error message indicating what failed and how to fix the issue",
-            "example" : "Failed to accept a quote: <failure reason>"
+            "example" : "<failure reason>"
           },
           "data" : {
             "$ref" : "#/components/schemas/FXAcceptQuoteResponse_data"
@@ -627,12 +627,12 @@
           "code" : {
             "type" : "string",
             "description" : "This will indicate the error code in case of API error",
-            "example" : "FX001 etc."
+            "example" : "FX001"
           },
           "message" : {
             "type" : "string",
             "description" : "This will be the detailed error message indicating what failed and how to fix the issue",
-            "example" : "Failed to perform the cover trade: <failure reason>"
+            "example" : "<failure reason>"
           },
           "data" : {
             "$ref" : "#/components/schemas/FXCoverTradeResponse_data"
@@ -644,12 +644,12 @@
           "status" : {
             "type" : "string",
             "description" : "This will return Success/Failed",
-            "example" : "Success or Failure"
+            "example" : "Success"
           },
           "code" : {
             "type" : "string",
             "description" : "This will indicate the error code in case of API error",
-            "example" : "FX001 etc."
+            "example" : "FX001"
           },
           "message" : {
             "type" : "string",
@@ -666,12 +666,12 @@
           "status" : {
             "type" : "string",
             "description" : "This will return Success/Failed",
-            "example" : "Success or Failure"
+            "example" : "Success"
           },
           "code" : {
             "type" : "string",
             "description" : "This will indicate the error code in case of API error",
-            "example" : "FX001 etc."
+            "example" : "FX001"
           },
           "message" : {
             "type" : "string",
