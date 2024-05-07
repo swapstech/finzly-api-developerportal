@@ -1,0 +1,1082 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Foreign Exchange API",
+    "version" : "2.2.2"
+  },
+  "servers" : [ {
+    "url" : "https://sandbox-security-uat.finzly.io/auth/realms/BANKOS.UAT.SANDBOX.CUSTOMER/protocol/openid-connect/token",
+    "description" : "Authentication",
+    "variables" : {
+      "tenant" : {
+        "description" : "Tenant",
+        "default" : "sandbox"
+      }
+    }
+  } ],
+  "security" : [ {
+    "oAuth2" : [ "roles" ]
+  } ],
+  "tags" : [ {
+    "name" : "Foreign Exchange",
+    "description" : "Foreign Exchange (FX) is the trading of one currency for another. For example, one can swap the U.S. dollar for the euro.\n\nForeign Exchange Finzly FX APIs enables third-parties, banks, and bank's downstream partners to initiate and manage FX trades for their customers.\n\nFollowing use cases helps you to understand the current FX capabilities exposed via Finzly Connect APIs\n   \n 1. Get FX Quote\n 2. Accept FX Quote\n 3. Reject FX Quote\n 4. Get FX Trade\n 5. Cover FX Trade\n 6. Cancel FX Trade\n"
+  } ],
+  "paths" : {
+    "/v2/fx/quote" : {
+      "post" : {
+        "tags" : [ "Foreign Exchange" ],
+        "summary" : "Get FX Quote",
+        "description" : "Request quote for FX trade",
+        "operationId" : "getFXQuote",
+        "requestBody" : {
+          "description" : "Quote request attributes to get the quote for a given ccy pair",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/FXQuoteRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "default" : {
+            "description" : "Response to the Get FX Quote",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FXQuoteResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successfully processed request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FXQuoteResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter environment"
+          },
+          "401" : {
+            "description" : "You are not authorized to access the resource"
+          },
+          "403" : {
+            "description" : "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404" : {
+            "description" : "The resource you were trying to reach is not found"
+          },
+          "405" : {
+            "description" : "bad input parameter environment"
+          },
+          "500" : {
+            "description" : "Internal server error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Service unavailable"
+          }
+        }
+      }
+    },
+    "/v2/fx/accept" : {
+      "put" : {
+        "tags" : [ "Foreign Exchange" ],
+        "summary" : "Accept FX Quote",
+        "description" : "Accept FX Quote",
+        "operationId" : "acceptFXQuote",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/FXAcceptQuoteRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "default" : {
+            "description" : "FX Quote acceptance response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FXAcceptQuoteResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successfully processed request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FXAcceptQuoteResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter environment"
+          },
+          "401" : {
+            "description" : "You are not authorized to access the resource"
+          },
+          "403" : {
+            "description" : "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404" : {
+            "description" : "The resource you were trying to reach is not found"
+          },
+          "405" : {
+            "description" : "bad input parameter environment"
+          },
+          "500" : {
+            "description" : "Internal server error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Service unavailable"
+          }
+        }
+      }
+    },
+    "/v2/fx/{quoteUUID}/reject" : {
+      "put" : {
+        "tags" : [ "Foreign Exchange" ],
+        "summary" : "Reject FX Quote",
+        "description" : "Reject FX Quote",
+        "operationId" : "rejectFXQuote",
+        "parameters" : [ {
+          "name" : "quoteUUID",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "FX Quote universally unique identifier (UUID)"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "FX Quote rejection response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FXRejectQuoteResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successfully processed request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FXRejectQuoteResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter environment"
+          },
+          "401" : {
+            "description" : "You are not authorized to access the resource"
+          },
+          "403" : {
+            "description" : "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404" : {
+            "description" : "The resource you were trying to reach is not found"
+          },
+          "405" : {
+            "description" : "bad input parameter environment"
+          },
+          "500" : {
+            "description" : "Internal server error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Service unavailable"
+          }
+        }
+      }
+    },
+    "/v2/fx/{forexContractNo}" : {
+      "get" : {
+        "tags" : [ "Foreign Exchange" ],
+        "summary" : "Get FX Trade information",
+        "description" : "Get FX trade information",
+        "operationId" : "getFXTradeInformation",
+        "parameters" : [ {
+          "name" : "forexContractNo",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "FX Contract Number"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "Response to the Get FXTrade request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FXTradeInfoResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successfully processed request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FXTradeInfoResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter environment"
+          },
+          "401" : {
+            "description" : "You are not authorized to access the resource"
+          },
+          "403" : {
+            "description" : "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404" : {
+            "description" : "The resource you were trying to reach is not found"
+          },
+          "405" : {
+            "description" : "bad input parameter environment"
+          },
+          "500" : {
+            "description" : "Internal server error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Service unavailable"
+          }
+        }
+      }
+    },
+    "/v2/fx/{forexContractNo}/cover" : {
+      "get" : {
+        "tags" : [ "Foreign Exchange" ],
+        "summary" : "Cover FX trade",
+        "description" : "Cover FX trade",
+        "operationId" : "coverFXTrade",
+        "parameters" : [ {
+          "name" : "forexContractNo",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "FX Contract Number"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "Response to the cover trade request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FXCoverTradeResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successfully processed request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FXCoverTradeResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter environment"
+          },
+          "401" : {
+            "description" : "You are not authorized to access the resource"
+          },
+          "403" : {
+            "description" : "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404" : {
+            "description" : "The resource you were trying to reach is not found"
+          },
+          "405" : {
+            "description" : "bad input parameter environment"
+          },
+          "500" : {
+            "description" : "Internal server error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Service unavailable"
+          }
+        }
+      }
+    },
+    "/v2/fx/{forexContractNo}/cancel" : {
+      "delete" : {
+        "tags" : [ "Foreign Exchange" ],
+        "summary" : "Cancel FX trade",
+        "description" : "Cancel FX Trade",
+        "operationId" : "cancelFXTrade",
+        "parameters" : [ {
+          "name" : "forexContractNo",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "FX Contract Number"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "FX Trade cancelation response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FXTradeCancelResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Successfully processed request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FXTradeCancelResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter environment"
+          },
+          "401" : {
+            "description" : "You are not authorized to access the resource"
+          },
+          "403" : {
+            "description" : "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404" : {
+            "description" : "The resource you were trying to reach is not found"
+          },
+          "405" : {
+            "description" : "bad input parameter environment"
+          },
+          "500" : {
+            "description" : "Internal server error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Service unavailable"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Error" : {
+        "properties" : {
+          "code" : {
+            "type" : "string",
+            "description" : "Error code assigned by the system",
+            "example" : "invalidMethod"
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "Error description to provide addtional details about the error code",
+            "example" : "Invalid HTTP method used"
+          }
+        }
+      },
+      "FXQuoteRequest" : {
+        "required" : [ "customerId", "customerIdType", "externalReferenceId", "productType" ],
+        "properties" : {
+          "externalReferenceId" : {
+            "type" : "string",
+            "description" : "Unique reference id from a system outside of finzly. The external reference id can be used by the finzly for the request tracing (if needed).",
+            "example" : "REQ123"
+          },
+          "channel" : {
+            "type" : "string",
+            "description" : "The channel name set by the FX quote request origination system such as API, TELLER etc. This is an optional field and defaulted to API if it is not provided. The channel names should be defined in the Finzly system before it can be used in the API.",
+            "example" : "ONLINE"
+          },
+          "customerId" : {
+            "type" : "string",
+            "description" : "The value based on the customerIdType",
+            "example" : "112344"
+          },
+          "customerIdType" : {
+            "type" : "string",
+            "description" : "CustomerId type",
+            "example" : "CustomerUID",
+            "enum" : [ "CustomerUID", "CustomerShortName", "CustomerId", "DDA" ]
+          },
+          "sellCurrency" : {
+            "type" : "string",
+            "description" : "Sell Currency",
+            "example" : "EUR"
+          },
+          "buyCurrency" : {
+            "type" : "string",
+            "description" : "Buy Currency",
+            "example" : "INR"
+          },
+          "fundingAmount" : {
+            "type" : "number",
+            "description" : "Funding Amount. Only one is needed between fundingAmount and transferAmount",
+            "example" : 10000
+          },
+          "transferAmount" : {
+            "type" : "number",
+            "description" : "Beneficiay receive amount. Only one is needed between fundingAmount and transferAmount",
+            "example" : 1000
+          },
+          "productType" : {
+            "type" : "string",
+            "description" : "FX financial instrument such SPOT or FORWARD",
+            "example" : "SPOT",
+            "enum" : [ "SPOT", "FORWARD" ]
+          },
+          "tenor" : {
+            "type" : "string",
+            "description" : "The length of time remaining before a financial contract expires. Only one is needed between tenor or valueDate. e.g SPOT, ON, TN",
+            "example" : "SPOT"
+          },
+          "valueDate" : {
+            "type" : "string",
+            "description" : "The delivery date on which counterparties to a transaction agree to settle their respective obligations by making payments and transferring ownership.Only one is needed between tenor or valueDate.The date format is in yyyy-mm-dd.",
+            "format" : "date",
+            "example" : "2020-01-01"
+          }
+        }
+      },
+      "FXQuoteResponse" : {
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "description" : "This will return Success/Failed",
+            "example" : "Success"
+          },
+          "code" : {
+            "type" : "string",
+            "description" : "This will indicate the error code in case of API error",
+            "example" : "FXQUOTE001"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "This will be the detailed error message indicating what failed and how to fix the issue",
+            "example" : "Failed to get a FX Quote due to the mandatory attribute <attribute-name> is not provide."
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/FXQuoteResponse_data"
+          }
+        }
+      },
+      "FXAcceptQuoteRequest" : {
+        "properties" : {
+          "quoteUUID" : {
+            "type" : "string",
+            "description" : "FX Quote universally unique identifier (UUID)",
+            "example" : "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "autoCover" : {
+            "type" : "boolean",
+            "description" : "This is an optional field. Set the value to true if auto cover is needed during the acceptance of FX quote.",
+            "example" : true
+          },
+          "autoCoverDelay" : {
+            "type" : "integer",
+            "description" : "This is an optional field. It is required if the auto cover is set to true. For the FX quote associated with the consumer then the allowed autoCoverDelay is from 30 minutes to 120 minutes. For non-consumer the allowed autoCoverDelay is from 0 to 120 minutes.",
+            "example" : 30
+          }
+        }
+      },
+      "FXAcceptQuoteResponse" : {
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "description" : "This will return Success/Failed",
+            "example" : "Success"
+          },
+          "code" : {
+            "type" : "string",
+            "description" : "This will indicate the error code in case of API error",
+            "example" : "FXQUOTE002"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "This will be the detailed error message indicating what failed and how to fix the issue",
+            "example" : "<failure reason>"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/FXAcceptQuoteResponse_data"
+          }
+        }
+      },
+      "FXRejectQuoteResponse" : {
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "description" : "This will return Success/Failed",
+            "example" : "Success"
+          },
+          "code" : {
+            "type" : "string",
+            "description" : "This will indicate the error code in case of API error",
+            "example" : "FXQUOTE003"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "This will be the detailed error message indicating what failed and how to fix the issue",
+            "example" : "<failure reason>"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/FXRejectQuoteResponse_data"
+          }
+        }
+      },
+      "FXCoverTradeResponse" : {
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "description" : "This will return Success/Failed",
+            "example" : "Success"
+          },
+          "code" : {
+            "type" : "string",
+            "description" : "This will indicate the error code in case of API error",
+            "example" : "FX001"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "This will be the detailed error message indicating what failed and how to fix the issue",
+            "example" : "<failure reason>"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/FXCoverTradeResponse_data"
+          }
+        }
+      },
+      "FXTradeInfoResponse" : {
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "description" : "This will return Success/Failed",
+            "example" : "Success"
+          },
+          "code" : {
+            "type" : "string",
+            "description" : "This will indicate the error code in case of API error",
+            "example" : "FX001"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "This will be the detailed error message indicating what failed and how to fix the issue",
+            "example" : "<failure reason>"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/FXTradeInfoResponse_data"
+          }
+        }
+      },
+      "FXTradeCancelResponse" : {
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "description" : "This will return Success/Failed",
+            "example" : "Success"
+          },
+          "code" : {
+            "type" : "string",
+            "description" : "This will indicate the error code in case of API error",
+            "example" : "FX001"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "This will be the detailed error message indicating what failed and how to fix the issue",
+            "example" : "<failure reason>"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/FXTradeCancelResponse_data"
+          }
+        }
+      },
+      "PricingTier" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        },
+        "description" : "PricingTier"
+      },
+      "FXQuoteResponse_data" : {
+        "type" : "object",
+        "properties" : {
+          "externalReferenceId" : {
+            "type" : "string",
+            "description" : "Unique reference id from a system outside of finzly. The external reference id can be used by the finzly for the request tracing (if needed).",
+            "example" : "REQ123"
+          },
+          "quoteUUID" : {
+            "type" : "string",
+            "description" : "FX Quote universally unique identifier (UUID)",
+            "example" : "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "expirySeconds" : {
+            "type" : "integer",
+            "description" : "Time in seconds after which the FX quote will expire",
+            "example" : 30
+          },
+          "exchangeRate" : {
+            "type" : "number",
+            "description" : "The price of one currency in terms of the other",
+            "example" : 1.2,
+            "default" : 0
+          },
+          "invertedRate" : {
+            "type" : "number",
+            "description" : "Time in seconds after which the FX quote will expire",
+            "example" : 0.83,
+            "default" : 0
+          },
+          "sellCurrency" : {
+            "type" : "string",
+            "description" : "Sell Currency",
+            "example" : "EUR"
+          },
+          "buyCurrency" : {
+            "type" : "string",
+            "description" : "Buy Currency",
+            "example" : "INR"
+          },
+          "fundingAmount" : {
+            "type" : "number",
+            "description" : "Funding Amount. Only one is needed between fundingAmount and transferAmount",
+            "example" : 10000
+          },
+          "transferAmount" : {
+            "type" : "number",
+            "description" : "Beneficiay receive amount. Only one is needed between fundingAmount and transferAmount",
+            "example" : 1000
+          },
+          "productType" : {
+            "type" : "string",
+            "description" : "FX financial instrument such SPOT or FORWARD",
+            "example" : "SPOT",
+            "enum" : [ "SPOT", "FORWARD" ]
+          },
+          "tenor" : {
+            "type" : "string",
+            "description" : "The length of time remaining before a financial contract expires. Only one is needed between tenor or valueDate.",
+            "example" : "SPOT"
+          },
+          "valueDate" : {
+            "type" : "string",
+            "description" : "The delivery date on which counterparties to a transaction agree to settle their respective obligations by making payments and transferring ownership.Only one is needed between tenor or valueDate. The date format is in yyyy-mm-dd.",
+            "format" : "date",
+            "example" : "2020-01-01"
+          },
+          "externalPricingSystemRefId" : {
+            "type" : "string",
+            "description" : "Unique reference id returned by the external system provider.",
+            "example" : "R1274878"
+          }
+        }
+      },
+      "FXAcceptQuoteResponse_data" : {
+        "type" : "object",
+        "properties" : {
+          "quoteUUID" : {
+            "type" : "string",
+            "description" : "FX Quote universally unique identifier (UUID)",
+            "example" : "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "forexContractNo" : {
+            "type" : "string",
+            "description" : "FX contract number assigned by the system after acceptance.",
+            "example" : "123898"
+          },
+          "tradeStatus" : {
+            "type" : "string",
+            "description" : "Trade status after acceptance of fx quote",
+            "example" : "Booked"
+          },
+          "tradeDate" : {
+            "type" : "string",
+            "description" : "The trade date is the date on which a transaction was executed. The date format is in yyyy-mm-dd.",
+            "format" : "date",
+            "example" : "2020-01-01"
+          },
+          "ccyPair" : {
+            "type" : "string",
+            "description" : "A currency pair is the quotation of two different currencies, with the value of one currency being quoted against the other",
+            "example" : "USDEUR"
+          },
+          "direction" : {
+            "type" : "string",
+            "description" : "Buy or Sell",
+            "example" : "Buy"
+          },
+          "baseCcy" : {
+            "type" : "string",
+            "description" : "The base currency is the first currency stated in a currency pair quote",
+            "example" : "USD"
+          },
+          "baseAmount" : {
+            "type" : "number",
+            "description" : "Base currency amount",
+            "example" : 1000
+          },
+          "quoteCcy" : {
+            "type" : "string",
+            "description" : "The second currency is the quote currency, which states how much of the quote currency is required to buy one unit of the base currency.",
+            "example" : "USD"
+          },
+          "quoteAmount" : {
+            "type" : "number",
+            "description" : "Quote currency amount",
+            "example" : 900
+          },
+          "tenor" : {
+            "type" : "string",
+            "description" : "The length of time remaining before a financial contract expires. Only one is needed between tenor or valueDate.",
+            "example" : "SPOT"
+          },
+          "exchangeRate" : {
+            "type" : "number",
+            "description" : "The price of one currency in terms of the other",
+            "example" : 1.2,
+            "default" : 0
+          },
+          "valueDate" : {
+            "type" : "string",
+            "description" : "The delivery date on which counterparties to a transaction agree to settle their respective obligations by making payments and transferring ownership.Only one is needed between tenor or valueDate. The date format is in yyyy-mm-dd.",
+            "format" : "date",
+            "example" : "2020-01-01"
+          },
+          "referenceSpotRate" : {
+            "type" : "number",
+            "description" : "the offered rate",
+            "example" : 100
+          },
+          "referenceFwdPoints" : {
+            "type" : "number",
+            "description" : "The number of basis points added to or subtracted from the current spot rate of a currency pair to determine the forward rate for delivery on a specific value date",
+            "example" : 100
+          },
+          "executionTime" : {
+            "type" : "string",
+            "description" : "The execution time",
+            "format" : "date"
+          },
+          "externalPricingSystemRefId" : {
+            "type" : "string",
+            "description" : "Unique reference id returned by the external system provider.",
+            "example" : "R1274878"
+          }
+        }
+      },
+      "FXRejectQuoteResponse_data" : {
+        "type" : "object",
+        "properties" : {
+          "quoteUUID" : {
+            "type" : "string",
+            "description" : "FX Quote universally unique identifier (UUID)",
+            "example" : "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "fxQuoteStatus" : {
+            "type" : "string",
+            "description" : "FX Quote status after rejection",
+            "example" : "Rejected"
+          }
+        }
+      },
+      "FXCoverTradeResponse_data" : {
+        "type" : "object",
+        "properties" : {
+          "forexContractNo" : {
+            "type" : "string",
+            "description" : "FX contract number assigned by the system for a given customer trade.",
+            "example" : "123898"
+          },
+          "coverTradeNo" : {
+            "type" : "string",
+            "description" : "Unique cover trade number assigned by the system.",
+            "example" : "990919"
+          },
+          "externalPricingSystemRefId" : {
+            "type" : "string",
+            "description" : "Unique reference id provided by the external system",
+            "example" : "R1274878"
+          },
+          "channel" : {
+            "type" : "string",
+            "description" : "Channel associated with the cover trade.",
+            "example" : "API"
+          },
+          "customerIdType" : {
+            "type" : "string",
+            "description" : "CustomerId type associated with the cover trade",
+            "example" : "CustomerUID, CustomerShortName,CustomerId, DDA",
+            "enum" : [ "CustomerUID", "CustomerShortName", "CustomerId", "DDA" ]
+          },
+          "customerId" : {
+            "type" : "string",
+            "description" : "The value based on the customerIdType associated with the cover trade",
+            "example" : "112344"
+          },
+          "tradeDate" : {
+            "type" : "string",
+            "description" : "The trade date is the date on which a transaction was executed. The date format is in yyyy-mm-dd.",
+            "format" : "date",
+            "example" : "2020-01-01"
+          },
+          "valueDate" : {
+            "type" : "string",
+            "description" : "The delivery date on which counterparties to a transaction agree to settle their respective obligations by making payments and transferring ownership.Only one is needed between tenor or valueDate. The date format is in yyyy-mm-dd.",
+            "format" : "date",
+            "example" : "2020-01-01"
+          },
+          "ccyPair" : {
+            "type" : "string",
+            "description" : "A currency pair is the quotation of two different currencies, with the value of one currency being quoted against the other",
+            "example" : "USDEUR"
+          },
+          "direction" : {
+            "type" : "string",
+            "description" : "Buy or Sell",
+            "example" : "Buy"
+          },
+          "baseCcy" : {
+            "type" : "string",
+            "description" : "The base currency is the first currency stated in a currency pair quote",
+            "example" : "USD"
+          },
+          "baseAmount" : {
+            "type" : "number",
+            "description" : "Base currency amount",
+            "example" : 1000.0
+          },
+          "quoteCcy" : {
+            "type" : "string",
+            "description" : "The second currency is the quote currency, which states how much of the quote currency is required to buy one unit of the base currency.",
+            "example" : "EUR"
+          },
+          "quoteAmount" : {
+            "type" : "number",
+            "description" : "Quote currency amount",
+            "example" : 955.08
+          },
+          "tenor" : {
+            "type" : "string",
+            "description" : "The length of time remaining before a financial contract expires. Only one is needed between tenor or valueDate.",
+            "example" : "SPOT"
+          },
+          "allInRate" : {
+            "type" : "number",
+            "description" : "The all in rate associated with the cover trade",
+            "example" : 0.98,
+            "default" : 0
+          },
+          "referenceSpotRate" : {
+            "type" : "number",
+            "description" : "the offered rate",
+            "example" : 100
+          }
+        }
+      },
+      "FXTradeInfoResponse_data" : {
+        "type" : "object",
+        "properties" : {
+          "forexContractNo" : {
+            "type" : "string",
+            "description" : "FX contract number assigned by the system for a given trade.",
+            "example" : "123898"
+          },
+          "tradeDate" : {
+            "type" : "string",
+            "description" : "The trade date is the date on which a transaction was executed. The date format is in yyyy-mm-dd.",
+            "format" : "date",
+            "example" : "2020-01-01"
+          },
+          "ccyPair" : {
+            "type" : "string",
+            "description" : "A currency pair is the quotation of two different currencies, with the value of one currency being quoted against the other",
+            "example" : "USDEUR"
+          },
+          "direction" : {
+            "type" : "string",
+            "description" : "Buy or Sell",
+            "example" : "Buy"
+          },
+          "baseCcy" : {
+            "type" : "string",
+            "description" : "The base currency is the first currency stated in a currency pair quote",
+            "example" : "USD"
+          },
+          "baseAmount" : {
+            "type" : "number",
+            "description" : "Base currency amount",
+            "example" : 1000
+          },
+          "quoteCcy" : {
+            "type" : "string",
+            "description" : "The second currency is the quote currency, which states how much of the quote currency is required to buy one unit of the base currency.",
+            "example" : "USD"
+          },
+          "quoteAmount" : {
+            "type" : "number",
+            "description" : "Quote currency amount",
+            "example" : 900
+          },
+          "tenor" : {
+            "type" : "string",
+            "description" : "The length of time remaining before a financial contract expires. Only one is needed between tenor or valueDate.",
+            "example" : "SPOT"
+          },
+          "exchangeRate" : {
+            "type" : "number",
+            "description" : "The price of one currency in terms of the other",
+            "example" : 1.2,
+            "default" : 0
+          },
+          "valueDate" : {
+            "type" : "string",
+            "description" : "The delivery date on which counterparties to a transaction agree to settle their respective obligations by making payments and transferring ownership.Only one is needed between tenor or valueDate. The date format is in yyyy-mm-dd.",
+            "format" : "date",
+            "example" : "2020-01-01"
+          },
+          "referenceSpotRate" : {
+            "type" : "number",
+            "description" : "the offered rate",
+            "example" : 100
+          },
+          "referenceFwdPoints" : {
+            "type" : "number",
+            "description" : "The number of basis points added to or subtracted from the current spot rate of a currency pair to determine the forward rate for delivery on a specific value date",
+            "example" : 100
+          },
+          "executionTime" : {
+            "type" : "string",
+            "description" : "The execution time",
+            "format" : "date"
+          }
+        }
+      },
+      "FXTradeCancelResponse_data" : {
+        "type" : "object",
+        "properties" : {
+          "forexContractNo" : {
+            "type" : "string",
+            "description" : "FX contract number assigned by the system for a given trade.",
+            "example" : "123898"
+          },
+          "tradeStatus" : {
+            "type" : "string",
+            "description" : "Trade status after trade cancelation",
+            "example" : "Cancelled etc."
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "oAuth2" : {
+        "type" : "oauth2",
+        "description" : "BankOS OpenBanking API uses OAuth 2.0 authcodeflow with PKCE for end user authorization or implicit grant flow for system API accounts. A support request to Finzly is required to use implicit grant flow.",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "https://sandbox-security-uat.finzly.io/auth",
+            "tokenUrl" : "https://sandbox-security-uat.finzly.io/auth/realms/BANKOS.UAT.SANDBOX.CUSTOMER/protocol/openid-connect/token",
+            "scopes" : {
+              "roles" : "manage"
+            }
+          }
+        }
+      }
+    }
+  }
+}
