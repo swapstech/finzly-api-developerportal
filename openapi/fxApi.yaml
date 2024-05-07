@@ -2,7 +2,7 @@
   "openapi" : "3.0.0",
   "info" : {
     "title" : "Foreign Exchange API",
-    "version" : "2.2.1"
+    "version" : "2.2.2"
   },
   "servers" : [ {
     "url" : "https://sandbox-security-uat.finzly.io/auth/realms/BANKOS.UAT.SANDBOX.CUSTOMER/protocol/openid-connect/token",
