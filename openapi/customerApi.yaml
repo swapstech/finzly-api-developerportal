@@ -2,7 +2,7 @@
   "openapi" : "3.0.0",
   "info" : {
     "title" : "Customer and Account API",
-    "version" : "2.3.1"
+    "version" : "2.3.3"
   },
   "servers" : [ {
     "url" : "https://sandbox-digitalbanking-uat.finzly.io/auth/realms/{{TENANT}}/protocol/openid-connect/token",
@@ -140,7 +140,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/GetCustomersResponse"
+                  "$ref" : "#/components/schemas/SearchCustomersResponse"
                 }
               }
             }
@@ -150,7 +150,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/GetCustomersResponse"
+                  "$ref" : "#/components/schemas/SearchCustomersResponse"
                 }
               }
             }
@@ -393,7 +393,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/CreateUpdateCustomerResponse"
+                  "$ref" : "#/components/schemas/GetCustomersResponse"
                 }
               }
             }
@@ -403,7 +403,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/CreateUpdateCustomerResponse"
+                  "$ref" : "#/components/schemas/GetCustomersResponse"
                 }
               }
             }
@@ -476,7 +476,7 @@
           "schema" : {
             "type" : "string",
             "description" : "Type of account",
-            "example" : "Savings or Checking"
+            "example" : "Deposit or Loan"
           }
         }, {
           "name" : "status",
@@ -487,7 +487,7 @@
           "schema" : {
             "type" : "string",
             "description" : "Status if the account",
-            "example" : "Active or Inactive"
+            "example" : "Active or Closed or Suspended"
           }
         }, {
           "name" : "currency",
@@ -714,7 +714,7 @@
           "default" : {
             "description" : "Successful",
             "content" : {
-              "*/*" : {
+              "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/GetAccountResponse"
                 }
@@ -724,7 +724,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "*/*" : {
+              "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/GetAccountResponse"
                 }
@@ -802,7 +802,7 @@
           "default" : {
             "description" : "Successful",
             "content" : {
-              "*/*" : {
+              "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/UpdateAccountResponse"
                 }
@@ -812,7 +812,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "*/*" : {
+              "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/UpdateAccountResponse"
                 }
@@ -879,7 +879,7 @@
           "default" : {
             "description" : "Successful",
             "content" : {
-              "*/*" : {
+              "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/UpdateAccountResponse"
                 }
@@ -889,7 +889,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "*/*" : {
+              "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/UpdateAccountResponse"
                 }
@@ -1053,7 +1053,7 @@
           }
         } ],
         "requestBody" : {
-          "description" : "Account Info",
+          "description" : "Contact Info",
           "content" : {
             "application/json" : {
               "schema" : {
@@ -1220,11 +1220,11 @@
           }
         } ],
         "requestBody" : {
-          "description" : "Account Info",
+          "description" : "Contact Info",
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/CustomerContact"
+                "$ref" : "#/components/schemas/UpdateCustomerContact"
               }
             }
           },
@@ -1234,7 +1234,7 @@
           "default" : {
             "description" : "Successful",
             "content" : {
-              "*/*" : {
+              "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/CreateCustomerContactResponse"
                 }
@@ -1244,7 +1244,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "*/*" : {
+              "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/CreateCustomerContactResponse"
                 }
@@ -1325,7 +1325,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "*/*" : {
+              "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/CustomerUserResponse"
                 }
@@ -1406,7 +1406,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "*/*" : {
+              "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/CustomerUserResponse"
                 }
@@ -1585,7 +1585,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "*/*" : {
+              "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/GetCustomerUserResponse"
                 }
@@ -1744,7 +1744,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "*/*" : {
+              "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/GetCustomerRoleResponse"
                 }
@@ -1905,7 +1905,7 @@
           "200" : {
             "description" : "OK",
             "content" : {
-              "*/*" : {
+              "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/CustomerRoleResponse"
                 }
@@ -2051,6 +2051,50 @@
           }
         }
       },
+      "UpdateCustomerContactIntermediaryBankAddress" : {
+        "properties" : {
+          "addressLine1" : {
+            "type" : "string",
+            "description" : "Address line 1",
+            "example" : "111 My Street"
+          },
+          "addressLine2" : {
+            "type" : "string",
+            "description" : "Address Line 2",
+            "example" : "Suite 210"
+          },
+          "addressLine3" : {
+            "type" : "string",
+            "description" : "Address Line 3",
+            "example" : "Suite 210"
+          },
+          "city" : {
+            "type" : "string",
+            "description" : "City",
+            "example" : "Charlotte"
+          },
+          "state" : {
+            "type" : "string",
+            "description" : "State",
+            "example" : "North Carolina"
+          },
+          "postalCode" : {
+            "type" : "string",
+            "description" : "Postal code",
+            "example" : "28269"
+          },
+          "countryCode" : {
+            "type" : "string",
+            "description" : "ISO country code",
+            "example" : "USA"
+          },
+          "country" : {
+            "type" : "string",
+            "description" : "Country name",
+            "example" : "UNITED STATES OF AMERICA"
+          }
+        }
+      },
       "CustomerContactIntermediaryBankAddress" : {
         "required" : [ "addressLine1", "city", "countryCode", "postalCode" ],
         "properties" : {
@@ -2098,6 +2142,45 @@
       },
       "CustomerAddress" : {
         "required" : [ "addressLine1", "city", "countryCode", "postalCode" ],
+        "properties" : {
+          "addressLine1" : {
+            "type" : "string",
+            "description" : "Address line 1",
+            "example" : "111 My Street"
+          },
+          "addressLine2" : {
+            "type" : "string",
+            "description" : "Address Line 2",
+            "example" : "Suite 210"
+          },
+          "city" : {
+            "type" : "string",
+            "description" : "City",
+            "example" : "Charlotte"
+          },
+          "state" : {
+            "type" : "string",
+            "description" : "State",
+            "example" : "North Carolina"
+          },
+          "postalCode" : {
+            "type" : "string",
+            "description" : "Postal code",
+            "example" : "28269"
+          },
+          "countryCode" : {
+            "type" : "string",
+            "description" : "ISO country code",
+            "example" : "USA"
+          },
+          "country" : {
+            "type" : "string",
+            "description" : "Country name",
+            "example" : "UNITED STATES OF AMERICA"
+          }
+        }
+      },
+      "UpdateCustomerAddress" : {
         "properties" : {
           "addressLine1" : {
             "type" : "string",
@@ -2391,7 +2474,7 @@
             "type" : "boolean"
           },
           "mailingAddress" : {
-            "$ref" : "#/components/schemas/CustomerAddress"
+            "$ref" : "#/components/schemas/UpdateCustomerAddress"
           },
           "relationshipType" : {
             "type" : "string",
@@ -2450,7 +2533,7 @@
           "externalReferenceId" : {
             "type" : "string",
             "description" : "Unique reference id from a system outside of finzly. The external reference id can be used by the finzly for the request tracing (if needed).",
-            "example" : "REQ123"
+            "example" : "REQ1231"
           },
           "legalName" : {
             "type" : "string",
@@ -2529,13 +2612,13 @@
             "example" : "https://twitter.com/finzly"
           },
           "legalAddress" : {
-            "$ref" : "#/components/schemas/CustomerAddress"
+            "$ref" : "#/components/schemas/UpdateCustomerAddress"
           },
           "mailAddressSameAsLegal" : {
             "type" : "boolean"
           },
           "mailingAddress" : {
-            "$ref" : "#/components/schemas/CustomerAddress"
+            "$ref" : "#/components/schemas/UpdateCustomerAddress"
           },
           "relationshipType" : {
             "type" : "string",
@@ -2619,6 +2702,199 @@
             "items" : {
               "$ref" : "#/components/schemas/GetCustomerDetailResponse"
             }
+          }
+        }
+      },
+      "SearchCustomersResponse" : {
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "description" : "Status of the API request either it will be a success or a failure",
+            "example" : "Success",
+            "enum" : [ "Success", "Failure" ]
+          },
+          "code" : {
+            "type" : "string",
+            "description" : "Code associated with the error.",
+            "example" : "CUST001"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "Error message corresponding to the error code indicating the issue in API call and an indication on how to resolve it.",
+            "example" : "Failed to get the customer: <Reason>"
+          },
+          "pagination" : {
+            "$ref" : "#/components/schemas/Pagination"
+          },
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/SearchCustomerDetailResponse"
+            }
+          }
+        }
+      },
+      "SearchCustomerDetailResponse" : {
+        "properties" : {
+          "externalReferenceId" : {
+            "type" : "string",
+            "description" : "Unique reference id from a system outside of finzly. The external reference id can be used by the finzly for the request tracing purpose (if needed).",
+            "example" : "tran12780"
+          },
+          "legalName" : {
+            "type" : "string",
+            "description" : "Customer's legal name",
+            "example" : "DEMO Bank"
+          },
+          "shortName" : {
+            "type" : "string",
+            "description" : "Customer's short name",
+            "example" : "DMOB"
+          },
+          "customerUID" : {
+            "type" : "number",
+            "description" : "The unique identifier associated with the customer record assigned by the Finzly system.",
+            "example" : 111222
+          },
+          "customerType" : {
+            "type" : "string",
+            "description" : "Type of the customers in the Finzly CRM system",
+            "example" : "Consumer or Corporate or Downstream Partner or Processing Org or Financial Institution",
+            "enum" : [ "Consumer", "Corporate", "Financial Institution", "Downstream Partner", "Processing Org" ]
+          },
+          "taxId" : {
+            "type" : "string",
+            "description" : "A tax id that the US government uses to identify business entities located in the US number.",
+            "example" : "123456789"
+          },
+          "achCompanyID" : {
+            "type" : "string",
+            "description" : "ACH company ID is a 10-digit identifier used by banks and Nacha, the operator of the ACH network, to identify the entity collecting payments or sending money via ACH (also referred to as an “originator”)",
+            "example" : "1234567899"
+          },
+          "customerId" : {
+            "type" : "string",
+            "description" : "Customer id assigned by the user.",
+            "example" : "12347890"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "Current status of the customer.",
+            "example" : "Active"
+          },
+          "lei" : {
+            "type" : "string",
+            "description" : "Legal Entity Identifier (LEI) associated with the customer",
+            "example" : "ABC1234"
+          },
+          "swiftcode" : {
+            "type" : "string",
+            "description" : "SWIFT code that identifies your bank, country, location, and branch",
+            "example" : "BOFAUS3N"
+          },
+          "language" : {
+            "type" : "string",
+            "description" : "language",
+            "example" : "English"
+          },
+          "emailAddress" : {
+            "type" : "string",
+            "description" : "Customer email address",
+            "example" : "abc@bank.com"
+          },
+          "phoneNumber" : {
+            "type" : "string",
+            "description" : "Customer phone number",
+            "example" : "1112223333"
+          },
+          "faxNumber" : {
+            "type" : "string",
+            "description" : "Customer fax number",
+            "example" : "1231249877"
+          },
+          "website" : {
+            "type" : "string",
+            "description" : "Customer website url address",
+            "example" : "http://www.bank.com"
+          },
+          "logoUrl" : {
+            "type" : "string",
+            "description" : "Customer logo url",
+            "example" : "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png"
+          },
+          "linkedinUrl" : {
+            "type" : "string",
+            "description" : "Company linkedin URL",
+            "example" : "https://www.linkedin.com/company/finzly"
+          },
+          "twitterUrl" : {
+            "type" : "string",
+            "description" : "Customer twitter url",
+            "example" : "https://twitter.com/bank"
+          },
+          "legalAddress" : {
+            "$ref" : "#/components/schemas/UpdateCustomerAddress"
+          },
+          "mailAddressSameAsLegal" : {
+            "type" : "boolean"
+          },
+          "mailingAddress" : {
+            "$ref" : "#/components/schemas/UpdateCustomerAddress"
+          },
+          "relationshipType" : {
+            "type" : "string",
+            "description" : "Relationship Type",
+            "example" : "Customer or Bank or ThirdParty or Self",
+            "enum" : [ "customer", "bank", "thirdparty", "self" ]
+          },
+          "partnerOrgShortName" : {
+            "type" : "string",
+            "description" : "This is the shortname associated with the customer defined in the CRM system as 'Downstream Partner'. This is required only if the customer relationshipType is Third party",
+            "example" : "TESTBANK"
+          },
+          "processingOrgShortName" : {
+            "type" : "string",
+            "description" : "This is the shortname associated with the processing org the customer is associated with.",
+            "example" : "POBANK"
+          },
+          "costCenter" : {
+            "type" : "string",
+            "description" : "Cost Center associated with the customer entity",
+            "example" : "123123121"
+          },
+          "relationshipManager" : {
+            "type" : "string",
+            "description" : "Relationship manager name. It needs to be a valid user login id in the finzly system.",
+            "example" : "testuser"
+          },
+          "originatingOfficer" : {
+            "type" : "string",
+            "description" : "Originating Officer name. Its needs to be a valid user login id in the finzly system.",
+            "example" : "testuser"
+          },
+          "parentEntityShortName" : {
+            "type" : "string",
+            "description" : "This is the shortname associated with the existing customer legal entity act as a parent entity",
+            "example" : "TESTBANK"
+          },
+          "additionalProfileDetails" : {
+            "$ref" : "#/components/schemas/CustomerAdditonalProfileDetails"
+          },
+          "secCodes" : {
+            "type" : "array",
+            "description" : "Provide all valid SEC-Standard Entry Class codes allowed for the given customer entity",
+            "items" : {
+              "type" : "string",
+              "example" : "WEB"
+            }
+          },
+          "note" : {
+            "type" : "string",
+            "description" : "Free form text to leave any notes for the csutomer entity.",
+            "example" : "Notes for the customer"
+          },
+          "legalEntityAccessSettings" : {
+            "$ref" : "#/components/schemas/LegalEntityAccessSettings"
           }
         }
       },
@@ -2721,13 +2997,13 @@
             "example" : "https://twitter.com/bank"
           },
           "legalAddress" : {
-            "$ref" : "#/components/schemas/CustomerAddress"
+            "$ref" : "#/components/schemas/UpdateCustomerAddress"
           },
           "mailAddressSameAsLegal" : {
             "type" : "boolean"
           },
           "mailingAddress" : {
-            "$ref" : "#/components/schemas/CustomerAddress"
+            "$ref" : "#/components/schemas/UpdateCustomerAddress"
           },
           "relationshipType" : {
             "type" : "string",
@@ -2783,42 +3059,111 @@
           },
           "legalEntityAccessSettings" : {
             "$ref" : "#/components/schemas/LegalEntityAccessSettings"
+          },
+          "feeTier" : {
+            "$ref" : "#/components/schemas/feeTier"
+          },
+          "legalEntityLimits" : {
+            "$ref" : "#/components/schemas/legalEntityLimits"
+          }
+        }
+      },
+      "feeTier" : {
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "Application feeTier unique id which is associated with customer.",
+            "example" : "3616"
+          },
+          "application" : {
+            "type" : "string",
+            "description" : "An application name which is associated with customer and feeTier. e.g. Payment Galaxy, Confirms",
+            "example" : "Confirms"
+          },
+          "feeTier" : {
+            "type" : "string",
+            "description" : "Value for the fee tier.",
+            "example" : "Gold"
+          },
+          "accountNumber" : {
+            "type" : "string",
+            "description" : "Customer bank account number which is accosiated with customer and the fee tier.",
+            "example" : "40000023"
+          }
+        }
+      },
+      "legalEntityLimits" : {
+        "properties" : {
+          "key" : {
+            "type" : "string",
+            "description" : "Application limit code which is associated customer.",
+            "example" : "ACH_CCD_DEBIT_LIMIT_PER_BATCH"
+          },
+          "value" : {
+            "type" : "string",
+            "description" : "Application level limit which is associated customer.",
+            "example" : "21"
+          },
+          "applicationId" : {
+            "type" : "string",
+            "description" : "Application unique identification number which is associated with customer.",
+            "example" : "b6f342c3-e438-4d05-963e-12b144c0d467"
+          },
+          "applicationName" : {
+            "type" : "string",
+            "description" : "An application name which is associated with customer. e.g. Payment Galaxy, Confirms",
+            "example" : "Payment Galaxy"
           }
         }
       },
       "UpdateAccountRequest" : {
-        "required" : [ "externalReferenceId" ],
         "properties" : {
           "externalReferenceId" : {
-            "type" : "number",
-            "example" : 89856556
+            "type" : "string",
+            "description" : "Unique reference id from a system outside of finzly system. The external reference id can be used by the finzly for the request tracing purpose (if needed).",
+            "example" : "89856556"
           },
           "accountId" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "Bank account Id. Unique identifier number which is present in the finzly system. And associayed with the legal entity.",
+            "example" : "10252"
           },
           "accountType" : {
             "type" : "string",
+            "description" : "Type of account",
+            "example" : "Loan",
             "enum" : [ "Deposit", "Loan" ]
           },
           "accountSubType" : {
             "type" : "string",
+            "description" : "Sub account type",
+            "example" : "Savings",
             "enum" : [ "Checking", "Savings", "CD", "Money Market", "Pseudo", "HSA (Health Saving Account)" ]
           },
           "systemOfRecords" : {
             "type" : "string",
-            "enum" : [ "Other Core", "External" ]
+            "description" : "System of records.",
+            "example" : "External",
+            "enum" : [ "Other Core", "External", "Finzly Core" ]
           },
           "accountNumber" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "Bank account number. This an unique value in the finzly db.",
+            "example" : "95659895"
           },
           "currency" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "Currency of the account",
+            "example" : "USD"
           },
           "accountName" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "Bank account name.",
+            "example" : "xyz"
           },
           "masterGl" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "Master GL number."
           },
           "enableOffset" : {
             "type" : "string",
@@ -2852,16 +3197,23 @@
           },
           "fboAccountNumber" : {
             "type" : "string",
+            "description" : "The fbo account number should be associated with legal entity.",
             "example" : "1122344"
           },
           "country" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "Country name",
+            "example" : "UNITED STATES OF AMERICA"
           },
           "countryCode" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "ISO country code",
+            "example" : "US"
           },
           "routingNumber" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "Valid routing number/bankId",
+            "example" : "101206101"
           }
         }
       },
@@ -2889,7 +3241,7 @@
         }
       },
       "CreateAccountRequest" : {
-        "required" : [ "accountName", "accountNumber", "accountSubType", "accountType", "currency", "externalReferenceId", "masterGl", "routingNumber", "systemOfRecords" ],
+        "required" : [ "accountName", "accountNumber", "accountSubType", "accountType", "countryCode", "currency", "externalReferenceId", "masterGl", "routingNumber", "systemOfRecords" ],
         "properties" : {
           "externalReferenceId" : {
             "type" : "string",
@@ -2957,7 +3309,8 @@
             "example" : "Yes"
           },
           "fboAccountNumber" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "The fbo account number should be associated with legal entity."
           },
           "systemOfRecords" : {
             "type" : "string",
@@ -2976,35 +3329,43 @@
           },
           "reason" : {
             "type" : "string",
+            "description" : "Note",
             "example" : "Notes"
           },
           "isUnderWritten" : {
             "type" : "boolean",
+            "description" : "To allow UnderWritten for the account. It is an optional field. The Possible values are true/false.",
             "example" : false
           },
           "debitExposureLimit" : {
             "type" : "number",
+            "description" : "Debit exposure limit",
             "example" : 1000
           },
           "creditExposureLimit" : {
             "type" : "number",
+            "description" : "Credit exposure limit",
             "example" : 1000
           },
           "bankIdType" : {
             "type" : "string",
-            "example" : "NationalBankCode",
-            "enum" : [ "NationalBankCode", "SwiftBic" ]
+            "description" : "Bank identifier type",
+            "example" : "NID",
+            "enum" : [ "NID", "BIC" ]
           },
           "accountAnalysis" : {
             "type" : "boolean",
+            "description" : "Account analysis. It is an optional field. The Possible values are true/false.",
             "example" : false
           },
           "callbackLimit" : {
             "type" : "number",
+            "description" : "Call back limit.",
             "example" : 1000
           },
           "enableCallbacks" : {
             "type" : "boolean",
+            "description" : "Enable call backs. It is an optional field. The Possible values are true/false.",
             "example" : false
           },
           "accountFeatures" : {
@@ -3016,10 +3377,12 @@
         "properties" : {
           "rfpReceive" : {
             "type" : "boolean",
+            "description" : "Rfp receive. It is an optional field. The Possible values are true/false.",
             "example" : true
           },
           "rfpSend" : {
             "type" : "boolean",
+            "description" : "Rfp send. It is an optional field. The Possible values are true/false.",
             "example" : true
           }
         }
@@ -3118,7 +3481,7 @@
           },
           "fboAccountNumber" : {
             "type" : "string",
-            "description" : "FBO Account Number",
+            "description" : "The fbo account number should be associated with legal entity.",
             "example" : "2233445"
           },
           "accountType" : {
@@ -3256,7 +3619,7 @@
           },
           "fboAccountNumber" : {
             "type" : "string",
-            "description" : "FBO Account Number",
+            "description" : "The fbo account number should be associated with legal entity.",
             "example" : "2233445"
           },
           "type" : {
@@ -3371,16 +3734,12 @@
         }
       },
       "CustomerContact" : {
+        "required" : [ "contactBank", "externalReferenceId", "name", "templateName" ],
         "properties" : {
           "externalReferenceId" : {
             "type" : "string",
             "description" : "Unique reference id from a system outside of finzly system. The external reference id can be used by the finzly for the request tracing purpose (if needed).",
             "example" : "89856556"
-          },
-          "contactUID" : {
-            "type" : "string",
-            "description" : "Contact unique identifier.",
-            "example" : "1023"
           },
           "templateName" : {
             "type" : "string",
@@ -3416,6 +3775,60 @@
           },
           "regulartoryReporting" : {
             "type" : "array",
+            "description" : "The key for regular reporting should be configured in BankOs staticData. eg. routingNumber,social, TaxId etc...",
+            "items" : {
+              "$ref" : "#/components/schemas/CustomerContact_regulartoryReporting"
+            }
+          }
+        }
+      },
+      "UpdateCustomerContact" : {
+        "properties" : {
+          "externalReferenceId" : {
+            "type" : "string",
+            "description" : "Unique reference id from a system outside of finzly system. The external reference id can be used by the finzly for the request tracing purpose (if needed).",
+            "example" : "89856556"
+          },
+          "contactUID" : {
+            "type" : "string",
+            "description" : "Contact unique identifier.",
+            "example" : "1023"
+          },
+          "templateName" : {
+            "type" : "string",
+            "description" : "Contact unique name.",
+            "example" : "bene 1"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Contact name.",
+            "example" : "John"
+          },
+          "address" : {
+            "$ref" : "#/components/schemas/UpdateCustomerAddress"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "Customer Email Address",
+            "example" : "abc@abc.com"
+          },
+          "phoneNumber" : {
+            "type" : "string",
+            "description" : "Customer's Phone number",
+            "example" : "123-124-9877"
+          },
+          "contactBank" : {
+            "$ref" : "#/components/schemas/UpdateCustomerContact_contactBank"
+          },
+          "intermediaryBank" : {
+            "$ref" : "#/components/schemas/UpdateCustomerContact_intermediaryBank"
+          },
+          "otherInfo" : {
+            "$ref" : "#/components/schemas/CustomerContact_otherInfo"
+          },
+          "regulartoryReporting" : {
+            "type" : "array",
+            "description" : "The key for regular reporting should be configured in BankOs staticData. eg. routingNumber,social, TaxId etc...",
             "items" : {
               "$ref" : "#/components/schemas/CustomerContact_regulartoryReporting"
             }
@@ -4062,29 +4475,40 @@
         }
       },
       "CustomerContact_contactBank" : {
+        "required" : [ "accountCcy", "accountNo", "country", "name" ],
         "type" : "object",
         "properties" : {
           "country" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "Country name",
+            "example" : "UNITED STATES OF AMERICA"
           },
           "accountNo" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "Account Number",
+            "example" : "98989898"
           },
           "accountCcy" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "Account currency. Currency Code is ISO format.",
+            "example" : "USD"
           },
           "name" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "Name of the bank.",
+            "example" : "Banka"
           },
           "address" : {
             "$ref" : "#/components/schemas/CustomerAddress"
           },
           "nationalCode" : {
             "type" : "string",
+            "description" : "National code that identifies your bank, country, location, and branch. Either swiftCode or nationalCode is needed.",
             "example" : "0125487"
           },
           "swiftCode" : {
             "type" : "string",
+            "description" : "SWIFT code that identifies your bank, country, location, and branch. Either swiftCode or nationalCode is needed.",
             "example" : "USBNX000"
           }
         }
@@ -4093,16 +4517,24 @@
         "type" : "object",
         "properties" : {
           "country" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "Country name",
+            "example" : "UNITED STATES OF AMERICA"
           },
           "name" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "Name of the intermediary bank.",
+            "example" : "Banka"
           },
           "nationalCode" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "National code that identifies your bank, country, location, and branch. Either swiftCode or nationalCode is needed.",
+            "example" : "0125487"
           },
           "swiftCode" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "SWIFT code that identifies your bank, country, location, and branch. Either swiftCode or nationalCode is needed.",
+            "example" : "USBNX000"
           },
           "coverMessageRequired" : {
             "type" : "boolean",
@@ -4117,10 +4549,14 @@
         "type" : "object",
         "properties" : {
           "beneNotes" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "Bene note",
+            "example" : "Type something....."
           },
           "otherBeneBankInfo" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "Other bene bank info.",
+            "example" : "bank info."
           }
         }
       },
@@ -4128,10 +4564,82 @@
         "type" : "object",
         "properties" : {
           "key" : {
-            "type" : "string"
+            "type" : "string",
+            "example" : "routingNumber"
           },
           "value" : {
-            "type" : "string"
+            "type" : "string",
+            "example" : "4545"
+          }
+        }
+      },
+      "UpdateCustomerContact_contactBank" : {
+        "type" : "object",
+        "properties" : {
+          "country" : {
+            "type" : "string",
+            "description" : "Country name",
+            "example" : "UNITED STATES OF AMERICA"
+          },
+          "accountNo" : {
+            "type" : "string",
+            "description" : "Account Number",
+            "example" : "98989898"
+          },
+          "accountCcy" : {
+            "type" : "string",
+            "description" : "Account currency. Currency Code is ISO format.",
+            "example" : "USD"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Name of the bank.",
+            "example" : "Banka"
+          },
+          "address" : {
+            "$ref" : "#/components/schemas/UpdateCustomerAddress"
+          },
+          "nationalCode" : {
+            "type" : "string",
+            "description" : "National code that identifies your bank, country, location, and branch. Either swiftCode or nationalCode is needed.",
+            "example" : "0125487"
+          },
+          "swiftCode" : {
+            "type" : "string",
+            "description" : "SWIFT code that identifies your bank, country, location, and branch. Either swiftCode or nationalCode is needed.",
+            "example" : "USBNX000"
+          }
+        }
+      },
+      "UpdateCustomerContact_intermediaryBank" : {
+        "type" : "object",
+        "properties" : {
+          "country" : {
+            "type" : "string",
+            "description" : "Country name",
+            "example" : "UNITED STATES OF AMERICA"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Name of the intermediary bank.",
+            "example" : "Banka"
+          },
+          "nationalCode" : {
+            "type" : "string",
+            "description" : "National code that identifies your bank, country, location, and branch. Either swiftCode or nationalCode is needed.",
+            "example" : "0125487"
+          },
+          "swiftCode" : {
+            "type" : "string",
+            "description" : "SWIFT code that identifies your bank, country, location, and branch. Either swiftCode or nationalCode is needed.",
+            "example" : "USBNX000"
+          },
+          "coverMessageRequired" : {
+            "type" : "boolean",
+            "example" : true
+          },
+          "address" : {
+            "$ref" : "#/components/schemas/UpdateCustomerContactIntermediaryBankAddress"
           }
         }
       },
