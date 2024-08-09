@@ -2573,13 +2573,8 @@
         }
       },
       "CreateCustomerRequest" : {
-        "required" : [ "costCenter", "customerType", "externalReferenceId", "language", "legalAddress", "legalName", "mailAddressSameAsLegal", "originatingOfficer", "relationshipManager", "shortName", "taxId" ],
+        "required" : [ "costCenter", "customerType", "language", "legalAddress", "legalName", "mailAddressSameAsLegal", "originatingOfficer", "relationshipManager", "shortName", "taxId" ],
         "properties" : {
-          "externalReferenceId" : {
-            "type" : "string",
-            "description" : "Unique reference id from a system outside of finzly. The external reference id can be used by the finzly for the request tracing (if needed).",
-            "example" : "REQ123"
-          },
           "legalName" : {
             "type" : "string",
             "description" : "Customer's legal name",
@@ -2724,11 +2719,6 @@
       },
       "UpdateCustomerRequest" : {
         "properties" : {
-          "externalReferenceId" : {
-            "type" : "string",
-            "description" : "Unique reference id from a system outside of finzly. The external reference id can be used by the finzly for the request tracing (if needed).",
-            "example" : "REQ1231"
-          },
           "legalName" : {
             "type" : "string",
             "description" : "Customer's legal name",
@@ -2999,11 +2989,6 @@
       },
       "SearchCustomerDetailResponse" : {
         "properties" : {
-          "externalReferenceId" : {
-            "type" : "string",
-            "description" : "Unique reference id from a system outside of finzly. The external reference id can be used by the finzly for the request tracing purpose (if needed).",
-            "example" : "tran12780"
-          },
           "legalName" : {
             "type" : "string",
             "description" : "Customer's legal name",
@@ -3163,11 +3148,6 @@
       },
       "GetCustomerDetailResponse" : {
         "properties" : {
-          "externalReferenceId" : {
-            "type" : "string",
-            "description" : "Unique reference id from a system outside of finzly. The external reference id can be used by the finzly for the request tracing purpose (if needed).",
-            "example" : "tran12780"
-          },
           "legalName" : {
             "type" : "string",
             "description" : "Customer's legal name",
@@ -3381,11 +3361,6 @@
       },
       "UpdateAccountRequest" : {
         "properties" : {
-          "externalReferenceId" : {
-            "type" : "string",
-            "description" : "Unique reference id from a system outside of finzly system. The external reference id can be used by the finzly for the request tracing purpose (if needed).",
-            "example" : "89856556"
-          },
           "accountId" : {
             "type" : "string",
             "description" : "Bank account Id. Unique identifier number which is present in the finzly system. And associayed with the legal entity.",
@@ -3504,13 +3479,8 @@
         }
       },
       "CreateAccountRequest" : {
-        "required" : [ "accountName", "accountNumber", "accountSubType", "accountType", "countryCode", "currency", "externalReferenceId", "masterGl", "routingNumber", "systemOfRecords" ],
+        "required" : [ "accountName", "accountNumber", "accountSubType", "accountType", "countryCode", "currency", "masterGl", "routingNumber", "systemOfRecords" ],
         "properties" : {
-          "externalReferenceId" : {
-            "type" : "string",
-            "description" : "Unique reference id from a system outside of finzly. The external reference id can be used by the finzly for the request tracing (if needed).",
-            "example" : "REQ123"
-          },
           "accountName" : {
             "type" : "string",
             "description" : "Name for the account",
@@ -3997,13 +3967,8 @@
         }
       },
       "CustomerContact" : {
-        "required" : [ "contactBank", "externalReferenceId", "name", "templateName" ],
+        "required" : [ "contactBank", "name", "templateName" ],
         "properties" : {
-          "externalReferenceId" : {
-            "type" : "string",
-            "description" : "Unique reference id from a system outside of finzly system. The external reference id can be used by the finzly for the request tracing purpose (if needed).",
-            "example" : "89856556"
-          },
           "templateName" : {
             "type" : "string",
             "description" : "Contact unique name.",
@@ -4047,11 +4012,6 @@
       },
       "UpdateCustomerContact" : {
         "properties" : {
-          "externalReferenceId" : {
-            "type" : "string",
-            "description" : "Unique reference id from a system outside of finzly system. The external reference id can be used by the finzly for the request tracing purpose (if needed).",
-            "example" : "89856556"
-          },
           "contactUID" : {
             "type" : "string",
             "description" : "Contact unique identifier.",
@@ -4174,13 +4134,8 @@
         }
       },
       "CustomerUserCreateRequest" : {
-        "required" : [ "department", "email", "externalReferenceId", "firstName", "lastName", "loginId", "mobile", "roleNames" ],
+        "required" : [ "department", "email", "firstName", "lastName", "loginId", "mobile", "roleNames" ],
         "properties" : {
-          "externalReferenceId" : {
-            "type" : "string",
-            "description" : "Unique reference id from a system outside of finzly. The external reference id can be used by the finzly for the request tracing (if needed).",
-            "example" : "User101"
-          },
           "loginId" : {
             "type" : "string",
             "description" : "Unique identifier. Only characters, numbers and special characters are allowed.",
@@ -4362,11 +4317,6 @@
       },
       "CustomerUserUpdateRequest" : {
         "properties" : {
-          "externalReferenceId" : {
-            "type" : "string",
-            "description" : "Unique reference id from a system outside of finzly. The external reference id can be used by the finzly for the request tracing (if needed).",
-            "example" : "User101"
-          },
           "firstName" : {
             "type" : "string",
             "description" : "User first name. Only characters are allowed.",
@@ -4418,13 +4368,8 @@
         }
       },
       "CustomerRoleCreateRequest" : {
-        "required" : [ "applications", "description", "externalReferenceId", "name" ],
+        "required" : [ "applications", "description", "name" ],
         "properties" : {
-          "externalReferenceId" : {
-            "type" : "string",
-            "description" : "Unique reference id from a system outside of finzly. The external reference id can be used by the finzly for the request tracing (if needed).",
-            "example" : "Role101"
-          },
           "name" : {
             "type" : "string",
             "description" : "A valid role name can consist of alphanumeric characters.",
@@ -4488,11 +4433,6 @@
       },
       "SearchUserResponse" : {
         "properties" : {
-          "externalReferenceId" : {
-            "type" : "string",
-            "description" : "Unique reference id from a system outside of finzly. The external reference id can be used by the finzly for the request tracing (if needed). ",
-            "example" : "89856556"
-          },
           "loginId" : {
             "type" : "string",
             "description" : "Unique identifier.",
@@ -4697,10 +4637,6 @@
             "description" : "Customer id within Finzly's CRM system",
             "example" : "123"
           },
-          "externalReferenceId" : {
-            "type" : "string",
-            "example" : "89895487eyr878"
-          },
           "shortName" : {
             "type" : "string",
             "example" : "ACBCORP"
@@ -4718,10 +4654,6 @@
           "accountUID" : {
             "type" : "string",
             "description" : "Account unique identifier assigned by the system"
-          },
-          "externalReferenceId" : {
-            "type" : "string",
-            "example" : "89856556"
           }
         }
       },
@@ -4730,10 +4662,6 @@
         "properties" : {
           "accountUID" : {
             "type" : "string"
-          },
-          "externalReferenceId" : {
-            "type" : "string",
-            "example" : "89856556"
           }
         }
       },
@@ -4912,11 +4840,6 @@
           "customerContactUID" : {
             "type" : "string",
             "description" : "Customer contact unique identifier created by the system."
-          },
-          "externalReferenceId" : {
-            "type" : "string",
-            "description" : "External reference id received in the request.",
-            "example" : "89856556"
           }
         }
       },
